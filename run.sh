@@ -1,0 +1,1 @@
+pdf2txt.py storm_of_swords.pdf > storm_of_swords.txt
