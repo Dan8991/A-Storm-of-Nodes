@@ -19,8 +19,7 @@ class Chapter(object):
     def __str__(self):
         return "chapter name = {}\nchapter length = {}".format(self.title, len(self.words))
 
-    def get_non_english_words(self, non_names = None):
-        
+    def get_non_english_words(self, non_names = [], bastard_names = []):
         dictionary = enchant.Dict("en_UK")
         dictionary2 = set(diction.words())
 
@@ -29,7 +28,7 @@ class Chapter(object):
         last_non_eng = False
         
         for word in words:
-            if ((not dictionary.check(word.lower())) or (word.lower() not in dictionary2)) and word[0].isupper() and (word not in non_names):
+            if (word in bastard_names) or (((not dictionary.check(word.lower())) or (word.lower() not in dictionary2)) and word[0].isupper() and (word not in non_names)):
                 if last_non_eng:
                     non_english_words[-1] += " " + word
                 else:
@@ -75,7 +74,7 @@ def parse_punctuation(s):
 
     return parsed
 
-def get_non_names(file_name):
+def get_names(file_name):
     return set([line.replace("\n", "") for line in open(file_name, 'r')])
 
 if (len(sys.argv) > 1) and (sys.argv[1] == "parse"):
@@ -86,17 +85,17 @@ if (len(sys.argv) > 1) and (sys.argv[1] == "parse"):
     with open("storm_of_swords.txt", "w") as f:
         f.writelines(lines)
 
-
 pdf_file = open("storm_of_swords.txt", 'r')
 
 chapters = get_chapters_from_text([line for line in pdf_file])
 
-non_names = get_non_names("non_character_names.txt")
+non_names = get_names("non_character_names.txt")
+bastard_names = get_names("extra_names.txt")
 
 if sys.argv[-1] == "-1":
-    unique = list(reduce(lambda x, y: x.union(y), [chapter.get_non_english_words(non_names = non_names) for chapter in chapters]))
+    unique = list(reduce(lambda x, y: x.union(y), [chapter.get_non_english_words(non_names = non_names, bastard_names = bastard_names) for chapter in chapters]))
 else: 
-    unique = list(chapters[int(sys.argv[-1])].get_non_english_words(non_names = non_names))
+    unique = list(chapters[int(sys.argv[-1])].get_non_english_words(non_names = non_names, bastard_names = bastard_names))
 
 unique.sort()
 print("Unique characters found:", len(unique))
