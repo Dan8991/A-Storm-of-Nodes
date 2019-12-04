@@ -57,15 +57,17 @@ def get_chapters_from_text(text):
 def parse_punctuation(s):
 
     #changing all puntuation to a comma and separating it from words
-    parsed = re.sub(r"[\.,!?”“…]", " , ", s)
+    parsed = re.sub(r"[\.,!?”“…;]", " , ", s)
     
     #removing multiple spaces
     parsed = " ".join(parsed.split()) + "\n"
 
     #removing saxons genitive and other similar things because it is annoying for parsing
-    parsed = re.sub(r"(’s|’n|’d)", "", parsed)
+    parsed = re.sub(r"(’s|’n|’d|’i)", "", parsed)
 
-    parsed = re.sub(r"-\n", "", parsed)
+    parsed = re.sub(r"—", " ", parsed)
+
+    parsed = re.sub(r"(-\n|—\n)", "", parsed)
 
     return parsed
 
@@ -87,9 +89,11 @@ chapters = get_chapters_from_text([line for line in pdf_file])
 
 non_names = get_non_names("non_character_names.txt")
 
-if sys.argv[-1] == -1:
+if sys.argv[-1] == "-1":
     unique = list(reduce(lambda x, y: x.union(y), [chapter.get_non_english_words(non_names = non_names) for chapter in chapters]))
 else: 
-    unique = chapters[int(sys.argv[-1])].get_non_english_words(non_names = non_names)
+    unique = list(chapters[int(sys.argv[-1])].get_non_english_words(non_names = non_names))
+
+unique.sort()
 print("Unique characters found: {}", len(unique))
 print(unique)
