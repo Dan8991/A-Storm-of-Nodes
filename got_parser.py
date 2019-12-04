@@ -2,6 +2,7 @@ import PyPDF2 as pdf
 import enchant
 import sys
 from functools import reduce
+from nltk.corpus import words as diction
 import re
 
 class Chapter(object):
@@ -21,11 +22,14 @@ class Chapter(object):
     def get_non_english_words(self, non_names = None):
         
         dictionary = enchant.Dict("en_UK")
+        dictionary2 = set(diction.words())
+
         words = self.words.split()
         non_english_words = []
         last_non_eng = False
+        
         for word in words:
-            if not dictionary.check(word) and word[0].isupper() and (word not in non_names):
+            if ((not dictionary.check(word.lower())) or (word.lower() not in dictionary2)) and word[0].isupper() and (word not in non_names):
                 if last_non_eng:
                     non_english_words[-1] += " " + word
                 else:
@@ -57,7 +61,7 @@ def get_chapters_from_text(text):
 def parse_punctuation(s):
 
     #changing all puntuation to a comma and separating it from words
-    parsed = re.sub(r"[\.,!?”“…;]", " , ", s)
+    parsed = re.sub(r"[\.!?,”“…;]", " , ", s)
     
     #removing multiple spaces
     parsed = " ".join(parsed.split()) + "\n"
@@ -95,5 +99,5 @@ else:
     unique = list(chapters[int(sys.argv[-1])].get_non_english_words(non_names = non_names))
 
 unique.sort()
-print("Unique characters found: {}", len(unique))
+print("Unique characters found:", len(unique))
 print(unique)
