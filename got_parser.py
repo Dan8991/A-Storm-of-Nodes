@@ -41,14 +41,14 @@ class Chapter(object):
 def get_chapters_from_text(text):
 
     # initializing data supposing that the first line is a title
-    title = text[0]
+    title = ""
     words = ""
     chapters = []
 
-    for line in text[1:]:
+    for line in text:
         if line.isupper() and (len(line.split()) == 1):
-            chapters.append(Chapter(title, words))
             title = line
+            chapters.append(Chapter(title, words))
             words = ""
         else:
             words += line
