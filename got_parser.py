@@ -108,6 +108,15 @@ def convert_dictionary(dictionary):
 
     return converted
 
+def get_characters_dictionary(dictionary):
+    ret = {}
+    for key in dictionary:
+        for val in dictionary[key]:
+            if val not in ret:
+                ret[val] = [key]
+            else:
+                ret[val].append(key)
+    return ret
 
 
 if (len(sys.argv) > 1) and (sys.argv[1] == "parse"):
@@ -135,9 +144,7 @@ else:
 unique.sort()
 print("Unique characters found:", len(unique))
 
-characters_dict = {}
 
-for character in unique:
-    compile_dict(character, characters_dict)
 
-characters_dict = convert_dictionary(characters_dict)
+final_dict = get_characters_dictionary(json.load(open("characters.json", "r")))
+json.dump(final_dict, open("final_characters.json", "w"), indent=4, sort_keys=True)
