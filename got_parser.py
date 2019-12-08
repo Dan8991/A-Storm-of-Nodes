@@ -3,7 +3,7 @@ import enchant
 import sys
 from functools import reduce
 import re
-
+import json
 
 class Chapter(object):
 
@@ -79,6 +79,36 @@ def parse_punctuation(s):
 def get_names(file_name):
     return set([line.replace("\n", "") for line in open(file_name, 'r')])
 
+#this function is needed in order to get a basic idea of which characters are actually the same one
+def compile_dict(character, characters_dict):
+    words_list = character.split()
+    for word in words_list:
+        if word in characters_dict:
+            characters_dict[word].append(character)
+        else:
+            characters_dict[word] = [character]
+
+def convert_dictionary(dictionary):
+    converted = {}
+
+    houses = set([line.replace("\n", "") for line in open('houses.txt', 'r')])
+
+    for key in dictionary:
+        if key in houses:
+            converted[key] = set(dictionary[key])
+        else:
+            for value in dictionary[key]:
+                if value in converted:
+                    converted[value].union(set(dictionary[key]))
+                else:
+                    converted[value] = set(dictionary[key])
+
+    for key in converted:
+        converted[key] = list(converted[key])
+
+    return converted
+
+
 
 if (len(sys.argv) > 1) and (sys.argv[1] == "parse"):
 
@@ -104,3 +134,10 @@ else:
 
 unique.sort()
 print("Unique characters found:", len(unique))
+
+characters_dict = {}
+
+for character in unique:
+    compile_dict(character, characters_dict)
+
+characters_dict = convert_dictionary(characters_dict)
