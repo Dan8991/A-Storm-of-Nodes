@@ -94,10 +94,6 @@
     "Allyria": [
         "Allyria"
     ],
-    "Allyrion": [
-        "Ryon Allyrion",
-        "Allyrion"
-    ],
     "Alyce": [
         "Alyce"
     ],
@@ -201,6 +197,7 @@
     ],
     "Baelor Hightower": [
         "Baelor Breakwind",
+        "Baelor Brightsmile",
         "Baelor Hightower"
     ],
     "Balon Greyjoy": [
@@ -214,6 +211,9 @@
     ],
     "Bannen": [
         "Bannen"
+    ],
+    "Beardless Dick": [
+        "Beardless Dick"
     ],
     "Barristan Selmy": [
         "Barristan Selmy",
@@ -249,7 +249,8 @@
     ],
     "Ben Plumm": [
         "Plumm",
-        "Ben Plumm"
+        "Ben Plumm",
+        "Ben"
     ],
     "Benfrey": [
         "Benfrey"
@@ -555,7 +556,12 @@
         "Donnel Haigh"
     ],
     "Donnel Hill": [
+        "Hill",
+        "Donnel",
         "Donnel Hill"
+    ],
+    "Robin Hill": [
+        "Robin Hill"
     ],
     "Donnel Locke": [
         "Donnel Locke"
@@ -602,6 +608,7 @@
     ],
     "Edd Tollett": [
         "Edd Tollett",
+        "Tollet",
         "Edd"
     ],
     "Eddard Stark": [
@@ -740,7 +747,8 @@
         "Gage"
     ],
     "Galbart Glover": [
-        "Galbart Glover"
+        "Galbart Glover",
+        "Galbart"
     ],
     "Galyeon": [
         "Galyeon"
@@ -871,7 +879,8 @@
     ],
     "Guncer Sunglass": [
         "Guncer",
-        "Guncer Sunglass"
+        "Guncer Sunglass",
+        "Sunglass"
     ],
     "Gunthor": [
         "Gunthor"
@@ -942,14 +951,6 @@
     ],
     "Henly": [
         "Henly"
-    ],
-    "Hill": [
-        "Hill",
-        "Donnel Hill"
-    ],
-    "Hobb": [
-        "Three-Finger Hobb",
-        "Hobb"
     ],
     "Hobber Redwyne": [
         "Hobber Redwyne"
@@ -1023,6 +1024,7 @@
         "Jacelyn Bywater"
     ],
     "Jack-Be-Lucky": [
+        "Jack",
         "Jack-Be-Lucky",
         "Jack-BeLucky"
     ],
@@ -1043,6 +1045,7 @@
     ],
     "Janna Fossoway": [
         "Janna Fossoway",
+        "Janna",
         "Fossoway",
         "Fossoways"
     ],
@@ -1080,7 +1083,7 @@
         "Jenna"
     ],
     "Jeor Mormont": [
-        "Jorah Mormont",
+        "Jeor Mormont",
         "Mormonts"
     ],
     "Jeyne Poole": [
@@ -1095,10 +1098,6 @@
     ],
     "Jhiqui": [
         "Jhiqui"
-    ],
-    "Jhogo": [
-        "Jhogo",
-        "Ko Jhogo"
     ],
     "Jinglebell Frey": [
         "Jinglebell Frey",
@@ -1155,10 +1154,6 @@
     "Joramun": [
         "Joramun"
     ],
-    "Jordayne": [
-        "Jordayne",
-        "Myria Jordayne"
-    ],
     "Jory Cassell": [
         "Jory",
         "Jory Cassell"
@@ -1209,6 +1204,7 @@
         "Drogo"
     ],
     "Khal Temmo": [
+        "Temmo",
         "Khal Temmo"
     ],
     "Khaznys": [
@@ -1323,10 +1319,6 @@
         "Flowers",
         "Tyrells"
     ],
-    "Lorch": [
-        "Lorch",
-        "Amory Lorch"
-    ],
     "Lormelle": [
         "Lormelle"
     ],
@@ -1353,7 +1345,8 @@
         "Blackwoods"
     ],
     "Lucas Roote": [
-        "Lucas Roote"
+        "Lucas Roote",
+        "Roote"
     ],
     "Lucias Vypren": [
         "Lucias Vypren"
@@ -1482,11 +1475,6 @@
     "Maester Willamen": [
         "Maester Willamen"
     ],
-    "Maesters Ballabar": [
-        "Maester Ballabar",
-        "Maesters Ballabar",
-        "Ballabar"
-    ],
     "Magnar": [
         "Magnar"
     ],
@@ -1604,7 +1592,8 @@
         "Melly"
     ],
     "Meredyth Crane": [
-        "Meredyth"
+        "Meredyth",
+        "Meredyth Crane"
     ],
     "Merling": [
         "Merling"
@@ -1625,8 +1614,12 @@
     "Merrit": [
         "Merrit"
     ],
+    "Michael": [
+        "Michael"
+    ],
     "Merry Crane": [
-        "Merry Crane"
+        "Merry Crane",
+        "Merry"
     ],
     "Merryweather": [
         "Merryweather"
@@ -1862,7 +1855,6 @@
         "Baelish",
         "Littlefinger",
         "Petyr Littlefinger",
-        "Petyr Baelish",
         "Petyr"
     ],
     "Philip Foote": [
@@ -1884,7 +1876,8 @@
     ],
     "Prendahl": [
         "Prendahl",
-        "Ghez"
+        "Ghez",
+        "Ghezn"
     ],
     "Prendos": [
         "Prendos"
@@ -2086,10 +2079,6 @@
         "Bolton",
         "Boltons"
     ],
-    "Roote": [
-        "Roote",
-        "Lucas Roote"
-    ],
     "Rorge": [
         "Rorge"
     ],
@@ -2158,8 +2147,7 @@
         "Samwell Tarly",
         "Tarly",
         "SAM",
-        "Samwell",
-        "Samwell Tarly"
+        "Samwell"
     ],
     "Samwell Spicer": [
         "Samwell Spicer",
@@ -2311,14 +2299,6 @@
         "Sumner",
         "Crakehalls"
     ],
-    "Sunglass": [
-        "Guncer Sunglass",
-        "Sunglass"
-    ],
-    "Sybell": [
-        "Sybell Spicer",
-        "Sybell"
-    ],
     "Sybell Spicer": [
         "Sybell Spicer",
         "Sybell",
@@ -2349,10 +2329,6 @@
     "Tarbeck": [
         "Tarbeck",
         "Tarbecks"
-    ],
-    "Temmo": [
-        "Temmo",
-        "Khal Temmo"
     ],
     "Templeton": [
         "Templeton",
@@ -2470,6 +2446,7 @@
         "Halfman",
         "Imp",
         "Tyrion Lannister",
+        "Imp Tyrion Lannister",
         "Lannisters"
     ],
     "Tysha": [
@@ -2620,7 +2597,8 @@
     "Wylis Manderly": [
         "Manderly",
         "Manderlys",
-        "Wylis Manderly"
+        "Wylis Manderly",
+        "Wylis"
     ],
     "Wylla": [
         "Wylla"
