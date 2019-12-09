@@ -59,22 +59,23 @@ class Chapter(object):
     def get_chapter_connections(self, characters, characters_id, link_length=100, non_names=[], extra_names=[]):
 
         extra_words, word_numbers = self.get_non_english_words(
-            non_names=non_names, extra_names=extra_names, return_word_numbers = True)
+            non_names=non_names, extra_names=extra_names, return_word_numbers=True)
 
         valid_char = [(characters_id[c], word_num) for char, word_num in zip(
-            extra_words, word_numbers) if char in characters for c in characters[char]]
+            extra_words, word_numbers) if char in characters for c in characters[char] if len(characters[char]) == 1]
 
-        protagonist_name = re.sub(r"\n", "", self.title[0] + self.title[1:].lower())
+        protagonist_name = re.sub(
+            r"\n", "", self.title[0] + self.title[1:].lower())
 
         protagonist_id = -1
-        if protagonist_name != "Prologue" and protagonist_name != "Epilogue": 
+        if protagonist_name != "Prologue" and protagonist_name != "Epilogue":
             protagonist_id = characters_id[characters[protagonist_name][0]]
 
         current_index = 0
         connections = []
-    
+
         for i in range(len(valid_char)):
-            
+
             if protagonist_id != -1:
                 connections.append((protagonist_id, valid_char[i][0]))
 
@@ -83,7 +84,6 @@ class Chapter(object):
 
             for j in range(current_index, i):
                 connections.append((valid_char[j][0], valid_char[i][0]))
-            
 
         return connections
 
@@ -94,10 +94,10 @@ def get_chapters_from_text(text):
     title = "PROLOGUE"
     words = ""
     chapters = []
-    i = 1
+
     for line in text[1:]:
         if line.isupper() and (len(line.split()) == 1):
-            i+=1
+            
             chapters.append(Chapter(title, words))
             title = line
             words = ""
@@ -106,6 +106,7 @@ def get_chapters_from_text(text):
 
     chapters.append(Chapter(title, words))
     return chapters
+
 
 def parse_punctuation(s):
 
@@ -206,13 +207,15 @@ nicknames_characters = get_characters_dictionary(characters_nicknames)
 
 print("Total characters found:", len(characters_nicknames.keys()))
 
-characters_id = {key: value for value, key in enumerate(characters_nicknames.keys())}
+characters_id = {key: value for value,
+                 key in enumerate(characters_nicknames.keys())}
 
 if sys.argv[-1] == "-1":
     connections = reduce(lambda x, y: x + y, [x.get_chapter_connections(
-        nicknames_characters, characters_id, non_names=non_names, extra_names=extra_names) for x in chapters])
+        nicknames_characters, characters_id, non_names=non_names, extra_names=extra_names, link_length=20) for x in chapters])
 else:
     connections = chapters[int(sys.argv[-1])].get_chapter_connections(
-        nicknames_characters, characters_id, non_names=non_names, extra_names=extra_names)
+        nicknames_characters, characters_id, non_names=non_names, extra_names=extra_names, link_length=20)
 
-print(connections[:10])
+with open("connections.csv", "w") as fp:
+    fp.writelines(map(lambda x: "{},{}\n".format(*x), connections))
