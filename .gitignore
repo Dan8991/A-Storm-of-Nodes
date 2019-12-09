@@ -2,3 +2,4 @@ storm_of_swords.*
 *.swp
 connections.csv
 __pycache__
+nodes.csv

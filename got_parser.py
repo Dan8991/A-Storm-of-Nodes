@@ -97,7 +97,7 @@ def get_chapters_from_text(text):
 
     for line in text[1:]:
         if line.isupper() and (len(line.split()) == 1):
-            
+
             chapters.append(Chapter(title, words))
             title = line
             words = ""
@@ -219,3 +219,7 @@ else:
 
 with open("connections.csv", "w") as fp:
     fp.writelines(map(lambda x: "{},{}\n".format(*x), connections))
+
+with open("nodes.csv", "w") as fp:
+    for key in characters_id:
+        fp.write("{},{}\n".format(key, characters_id[key]))
