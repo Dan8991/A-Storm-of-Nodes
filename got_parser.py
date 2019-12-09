@@ -5,6 +5,7 @@ from functools import reduce
 import re
 import json
 
+
 class Chapter(object):
 
     def __init__(self, title, words):
@@ -19,42 +20,92 @@ class Chapter(object):
     def __str__(self):
         return "chapter name = {}\nchapter length = {}".format(self.title, len(self.words))
 
-    def get_non_english_words(self, non_names=[], bastard_names=[]):
+    def get_non_english_words(self, non_names=[], extra_names=[], return_word_numbers=False):
         dictionary = enchant.Dict("en_UK")
 
         words = self.words.split()
         non_english_words = []
         last_non_eng = False
 
+        word_count = 0
+        word_numbers = []
+
         for word in words:
-            if (word in bastard_names) or ((not dictionary.check(word.lower())) and word[0].isupper() and (word not in non_names)):
+            word_count += 1
+            if (word in extra_names) or ((not dictionary.check(word.lower())) and word[0].isupper() and (word not in non_names)):
                 if last_non_eng:
                     non_english_words[-1] += " " + word
                 else:
                     non_english_words.append(word)
+                    word_numbers.append(word_count)
                 last_non_eng = True
             else:
                 last_non_eng = False
-        return set(non_english_words)
+
+        if return_word_numbers:
+            return non_english_words, word_numbers
+        else:
+            return non_english_words
+
+    '''
+        characters = dictionary that has as keys all the extra names and as value the characters that theese keys refer to
+        characters_id = dictionary that has the character name as key and it's unique id as value
+        link_length = maximum distance in words for which two characters can be considered linked
+        non_names = words that are not in the vocabulary that are not actually characters names
+        extra_names = words that are in the vocabulary that are actually characters names
+        return = all characters connections in the chapter
+    '''
+
+    def get_chapter_connections(self, characters, characters_id, link_length=100, non_names=[], extra_names=[]):
+
+        extra_words, word_numbers = self.get_non_english_words(
+            non_names=non_names, extra_names=extra_names, return_word_numbers = True)
+
+        valid_char = [(characters_id[c], word_num) for char, word_num in zip(
+            extra_words, word_numbers) if char in characters for c in characters[char]]
+
+        protagonist_name = re.sub(r"\n", "", self.title[0] + self.title[1:].lower())
+
+        protagonist_id = -1
+        if protagonist_name != "Prologue" and protagonist_name != "Epilogue": 
+            protagonist_id = characters_id[characters[protagonist_name][0]]
+
+        current_index = 0
+        connections = []
+    
+        for i in range(len(valid_char)):
+            
+            if protagonist_id != -1:
+                connections.append((protagonist_id, valid_char[i][0]))
+
+            while (valid_char[i][1] - link_length) > valid_char[current_index][1]:
+                current_index += 1
+
+            for j in range(current_index, i):
+                connections.append((valid_char[j][0], valid_char[i][0]))
+            
+
+        return connections
 
 
 def get_chapters_from_text(text):
 
     # initializing data supposing that the first line is a title
-    title = ""
+    title = "PROLOGUE"
     words = ""
     chapters = []
-
-    for line in text:
+    i = 1
+    for line in text[1:]:
         if line.isupper() and (len(line.split()) == 1):
-            title = line
+            i+=1
             chapters.append(Chapter(title, words))
+            title = line
             words = ""
         else:
             words += line
 
+    chapters.append(Chapter(title, words))
     return chapters
-
 
 def parse_punctuation(s):
 
@@ -79,7 +130,9 @@ def parse_punctuation(s):
 def get_names(file_name):
     return set([line.replace("\n", "") for line in open(file_name, 'r')])
 
-#this function is needed in order to get a basic idea of which characters are actually the same one
+# this function is needed in order to get a basic idea of which characters are actually the same one
+
+
 def compile_dict(character, characters_dict):
     words_list = character.split()
     for word in words_list:
@@ -87,6 +140,7 @@ def compile_dict(character, characters_dict):
             characters_dict[word].append(character)
         else:
             characters_dict[word] = [character]
+
 
 def convert_dictionary(dictionary):
     converted = {}
@@ -107,6 +161,7 @@ def convert_dictionary(dictionary):
         converted[key] = list(converted[key])
 
     return converted
+
 
 def get_characters_dictionary(dictionary):
     ret = {}
@@ -132,19 +187,32 @@ pdf_file = open("storm_of_swords.txt", 'r')
 chapters = get_chapters_from_text([line for line in pdf_file])
 
 non_names = get_names("non_character_names.txt")
-bastard_names = get_names("extra_names.txt")
+extra_names = get_names("extra_names.txt")
 
 if sys.argv[-1] == "-1":
-    unique = list(reduce(lambda x, y: x.union(y), [chapter.get_non_english_words(
-        non_names=non_names, bastard_names=bastard_names) for chapter in chapters]))
+    uniques = list(set(reduce(lambda x, y: set(x).union(set(y)), [chapter.get_non_english_words(
+        non_names=non_names, extra_names=extra_names) for chapter in chapters])))
 else:
-    unique = list(chapters[int(sys.argv[-1])].get_non_english_words(
-        non_names=non_names, bastard_names=bastard_names))
+    uniques = list(set(chapters[int(sys.argv[-1])].get_non_english_words(
+        non_names=non_names, extra_names=extra_names)))
 
-unique.sort()
-print("Unique characters found:", len(unique))
+uniques.sort()
+print("Unique characters found:", len(uniques))
+print(uniques)
 
 
+characters_nicknames = json.load(open("characters.json", "r"))
+nicknames_characters = get_characters_dictionary(characters_nicknames)
 
-final_dict = get_characters_dictionary(json.load(open("characters.json", "r")))
-json.dump(final_dict, open("final_characters.json", "w"), indent=4, sort_keys=True)
+print("Total characters found:", len(characters_nicknames.keys()))
+
+characters_id = {key: value for value, key in enumerate(characters_nicknames.keys())}
+
+if sys.argv[-1] == "-1":
+    connections = reduce(lambda x, y: x + y, [x.get_chapter_connections(
+        nicknames_characters, characters_id, non_names=non_names, extra_names=extra_names) for x in chapters])
+else:
+    connections = chapters[int(sys.argv[-1])].get_chapter_connections(
+        nicknames_characters, characters_id, non_names=non_names, extra_names=extra_names)
+
+print(connections[:10])
