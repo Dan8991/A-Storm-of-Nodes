@@ -5,8 +5,7 @@
         "Marbrand"
     ],
     "Aegon": [
-        "Aegon",
-        "Targaryens"
+        "Aegon"
     ],
     "Aemon Costayne": [
         "Aemon Costayne"
@@ -14,26 +13,22 @@
     "Aemon Targaryen": [
         "Maester Aemon",
         "Aemon",
-        "Aemon Targaryen",
-        "Targaryens"
+        "Aemon Targaryen"
     ],
     "Aenys Frey": [
         "Aenys",
-        "Aenys Frey",
-        "Freys"
+        "Aenys Frey"
     ],
     "Aerion Brightflame": [
         "Aerion",
         "Aerion Brightflame",
-        "Aerion Brightfire",
-        "Targaryens"
+        "Aerion Brightfire"
     ],
     "Aerys II Targaryen": [
         "Aerys II Targaryen",
         "Aerys II",
         "Aerys Targaryen",
-        "Aerys",
-        "Targaryens"
+        "Aerys"
     ],
     "Aethan": [
         "Aethan"
@@ -71,8 +66,7 @@
     ],
     "Alester Florent": [
         "Alester Florent",
-        "Alester",
-        "Florents"
+        "Alester"
     ],
     "Alfyn Crowkiller": [
         "Alfyn Crowkiller"
@@ -102,16 +96,14 @@
         "Alyn Connington"
     ],
     "Alys Karstark": [
-        "Alys Karstark",
-        "Karstarks"
+        "Alys Karstark"
     ],
     "Alysanne": [
         "Alysanne"
     ],
     "Alyx Frey": [
         "Alyx",
-        "Alyx Frey",
-        "Freys"
+        "Alyx Frey"
     ],
     "Amabel": [
         "Amabel"
@@ -142,8 +134,7 @@
         "Anguy"
     ],
     "Arianne": [
-        "Arianne",
-        "Martells"
+        "Arianne"
     ],
     "Arron Qorgyle": [
         "Arron Qorgyle",
@@ -164,13 +155,11 @@
     "Arya Stark": [
         "Arya",
         "Arya Stark",
-        "Arry",
-        "Starks"
+        "Arry"
     ],
     "Arys Oakheart": [
         "Arys Oakheart",
-        "Oakheart",
-        "Oakhearts"
+        "Oakheart"
     ],
     "Ashara Dayne": [
         "Ashara Dayne",
@@ -178,8 +167,7 @@
     ],
     "Axell Florent": [
         "Axell",
-        "Axell Florent",
-        "Florents"
+        "Axell Florent"
     ],
     "Azor Ahai": [
         "Azor Ahai"
@@ -188,12 +176,10 @@
         "Bael"
     ],
     "Baelor the Blessed": [
-        "Baelor",
-        "Targaryens"
+        "Baelor"
     ],
     "Baelor Breakspear": [
-        "Baelor Breakspear",
-        "Targaryens"
+        "Baelor Breakspear"
     ],
     "Baelor Hightower": [
         "Baelor Breakwind",
@@ -202,8 +188,7 @@
     ],
     "Balon Greyjoy": [
         "Balon",
-        "Balon Greyjoy",
-        "Greyjoys"
+        "Balon Greyjoy"
     ],
     "Balon Swann": [
         "Balon Swann",
@@ -217,6 +202,7 @@
     ],
     "Barristan Selmy": [
         "Barristan Selmy",
+        "Selmy",
         "Barristan",
         "Selmy:",
         "Arstan",
@@ -258,8 +244,7 @@
     "Benjen Stark": [
         "Benjen",
         "Benjen Stark",
-        "Ben Stark",
-        "Starks"
+        "Ben Stark"
     ],
     "Beric Dondarrion": [
         "Beric",
@@ -316,8 +301,7 @@
     "Brandon Stark": [
         "Bran",
         "Brandon Stark",
-        "Brandon",
-        "Starks"
+        "Brandon"
     ],
     "Brella": [
         "Brella"
@@ -335,8 +319,7 @@
         "Brynden Tully",
         "Brynden Blackfish",
         "Brynden",
-        "Blackfish",
-        "Tullys"
+        "Blackfish"
     ],
     "Lady Bulwer": [
         "Bulwer"
@@ -345,12 +328,10 @@
         "Jack Bulwer"   
     ],
     "Burley": [
-        "Burley",
-        "Burleys"
+        "Burley"
     ],
     "Burton Crakehall": [
-        "Burton Crakehall",
-        "Crakehalls"
+        "Burton Crakehall"
     ],
     "Butterbumps": [
         "Butterbumps"
@@ -372,9 +353,7 @@
     ],
     "Catelyn Stark": [
         "Catelyn Stark",
-        "Catelyn",
-        "Starks",
-        "Tullys"
+        "Catelyn"
     ],
     "Cedrik Storm": [
         "Cedrik Storm"
@@ -385,8 +364,7 @@
     ],
     "Cersei Lannister": [
         "Cersei Lannister",
-        "Cersei",
-        "Lannisters"
+        "Cersei"
     ],
     "Chataya": [
         "Chataya"
@@ -408,8 +386,7 @@
     ],
     "Cleos Frey": [
         "Cleos Frey",
-        "Cleos",
-        "Freys"
+        "Cleos"
     ],
     "Cley Cerwyn": [
         "Cley Cerwyn",
@@ -446,8 +423,7 @@
     ],
     "Daemon Blackfyre": [
         "Daemon Blackfyre",
-        "Blackfyre",
-        "Targaryens"
+        "Blackfyre"
     ],
     "Daemon Sand": [
         "Daemon",
@@ -457,7 +433,6 @@
         "Daenerys Targaryen",
         "Daenerys",
         "Daenerys Stormborn",
-        "Targaryens",
         "Khaleesi",
         "MHYSA",
         "Mhysa",
@@ -469,8 +444,7 @@
     "Dagos Manwoody": [
         "Dagos",
         "Dagos Manwoody",
-        "Manwoody",
-        "Manwoodys"
+        "Manwoody"
     ],
     "Dalla": [
         "Dalla"
@@ -485,21 +459,18 @@
         "Dancy"
     ],
     "Danny Flint": [
-        "Danny Flint",
-        "Flints"
+        "Danny Flint"
     ],
     "Danwell Frey": [
         "Danwell Frey",
-        "Danwell",
-        "Freys"
+        "Danwell"
     ],
     "Dareon": [
         "Dareon"
     ],
     "Daven Lannister": [
         "Daven",
-        "Daven Lannister",
-        "Lannisters"
+        "Daven Lannister"
     ],
     "Davos Seaworth": [
         "Davos Seaworth",
@@ -514,8 +485,7 @@
         "Del"
     ],
     "Delena": [
-        "Delena",
-        "Florents"
+        "Delena"
     ],
     "Delp": [
         "Delp"
@@ -524,13 +494,11 @@
         "Dennet"
     ],
     "Denys Arryn": [
-        "Denys Arryn",
-        "Arryns"
+        "Denys Arryn"
     ],
     "Denys Mallister": [
         "Denys Mallister",
-        "Denys",
-        "Mallisters"
+        "Denys"
     ],
     "Desmond Grell": [
         "Desmond",
@@ -551,6 +519,7 @@
     ],
     "Donal Noye": [
         "Donal Noye",
+        "Noye",
         "Donal"
     ],
     "Donnel Haigh": [
@@ -577,8 +546,7 @@
     ],
     "Doran Martell": [
         "Doran Martell",
-        "Doran",
-        "Martells"
+        "Doran"
     ],
     "Dormund": [
         "Dormund"
@@ -610,20 +578,19 @@
     "Edd Tollett": [
         "Edd Tollett",
         "Tollet",
+        "Tollett",
         "Edd"
     ],
     "Eddard Stark": [
         "Eddard",
         "Eddard Stark",
-        "Starks",
         "Ned",
         "Ned Stark"
     ],
     "Edmure Tully": [
         "Edmure Tully",
         "Edmure",
-        "Tully",
-        "Tullys"
+        "Tully"
     ],
     "Edric Dayne": [
         "Edric Dayne"
@@ -634,8 +601,7 @@
     ],
     "Edwyn Frey": [
         "Edwyn Frey",
-        "Edwyn",
-        "Freys"
+        "Edwyn"
     ],
     "Elenya": [
         "Elenya"
@@ -645,13 +611,11 @@
     ],
     "Elia Martell": [
         "Elia Martell",
-        "Elia",
-        "Martells"
+        "Elia"
     ],
     "Elinor Tyrell": [
         "Elinor Tyrell",
-        "Elinor",
-        "Tyrells"
+        "Elinor"
     ],
     "Ellaria Sand": [
         "Ellaria",
@@ -665,8 +629,7 @@
         "Elwood"
     ],
     "Elys Westerling": [
-        "Elys Westerling",
-        "Westerlings"
+        "Elys Westerling"
     ],
     "Emmett": [
         "Emmett"
@@ -677,8 +640,7 @@
         "Emmon"
     ],
     "Emmon Frey": [
-        "Emmon Frey",
-        "Freys"
+        "Emmon Frey"
     ],
     "Emrick": [
         "Emrick"
@@ -708,8 +670,7 @@
     "Euron Greyjoy": [
         "Euron Greyjoy",
         "Euron",
-        "Greyjoy",
-        "Greyjoys"
+        "Greyjoy"
     ],
     "Falyse": [
         "Falyse",
@@ -762,8 +723,7 @@
     ],
     "Garlan Tyrell": [
         "Garlan",
-        "Garlan Tyrell",
-        "Tyrells"
+        "Garlan Tyrell"
     ],
     "Garth": [
         "Garth Greyfeather",
@@ -775,8 +735,7 @@
     ],
     "Gawen Westerling": [
         "Gawen",
-        "Gawen Westerling",
-        "Westerlings"
+        "Gawen Westerling"
     ],
     "Gendel": [
         "Gendel"
@@ -785,8 +744,7 @@
         "Gendry"
     ],
     "Genna": [
-        "Genna",
-        "Lannisters"
+        "Genna"
     ],
     "Gerald Gower": [
         "Gerald Gower",
@@ -796,16 +754,14 @@
         "Gergen"
     ],
     "Gerion": [
-        "Gerion",
-        "Lannisters"
+        "Gerion"
     ],
     "Gerold Hightower": [
         "Gerold",
         "Gerold Hightower"
     ],
     "Gery": [
-        "Gery",
-        "Lannisters"
+        "Gery"
     ],
     "Ghael": [
         "Ghael"
@@ -847,8 +803,7 @@
         "Ullhor"
     ],
     "Greatjon": [
-        "Greatjon",
-        "Umbers"
+        "Greatjon"
     ],
     "Greenapple": [
         "Greenapple"
@@ -896,8 +851,7 @@
         "Gwayne"
     ],
     "Gyles": [
-        "Gyles",
-        "Rosbys"
+        "Gyles"
     ],
     "Halder": [
         "Halder"
@@ -926,7 +880,6 @@
     "Harrion Karstark": [
         "Harrion Karstark",
         "Harrion",
-        "Karstarks",
         "Karthark"
     ],
     "Harsley": [
@@ -973,21 +926,18 @@
     ],
     "Hosteen Frey": [
         "Hosteen",
-        "Hosteen Frey",
-        "Freys"
+        "Hosteen Frey"
     ],
     "Hoster Tully": [
         "Hoster",
         "Hoster Tully",
-        "Tully",
-        "Tullys"
+        "Tully"
     ],
     "Hother Whoresbane": [
         "Hother Whoresbane"
     ],
     "Howland": [
-        "Howland Reed",
-        "Reeds"
+        "Howland Reed"
     ],
     "Hubard Rambton": [
         "Hubard Rambton"
@@ -1013,8 +963,7 @@
     ],
     "Imry Florent": [
         "Imry Florent",
-        "Imry",
-        "Florents"
+        "Imry"
     ],
     "Ironhand": [
         "Ironhand"
@@ -1033,14 +982,12 @@
         "Jack-BeLucky"
     ],
     "Jaehaerys": [
-        "Jaehaerys",
-        "Targaryens"
+        "Jaehaerys"
     ],
     "Jaime Lannister": [
         "Jaime Lannister",
         "Jaime Jaime Jaime",
         "Jaime",
-        "Lannisters",
         "Kingslayer",
         "Kingthlayer"
     ],
@@ -1050,11 +997,11 @@
     "Janna Fossoway": [
         "Janna Fossoway",
         "Janna",
-        "Fossoway",
-        "Fossoways"
+        "Fossoway"
     ],
     "Janos Slynt": [
         "Janos Slynt",
+        "Slynt",
         "Janos"
     ],
     "Jaqen H\u2019ghar": [
@@ -1077,8 +1024,7 @@
     ],
     "Jason Mallister": [
         "Jason",
-        "Jason Mallister",
-        "Mallisters"
+        "Jason Mallister"
     ],
     "Jate": [
         "Jate"
@@ -1090,8 +1036,7 @@
         "Jenna"
     ],
     "Jeor Mormont": [
-        "Jeor Mormont",
-        "Mormonts"
+        "Jeor Mormont"
     ],
     "Jeyne Poole": [
         "Jeyne Poole"
@@ -1100,26 +1045,21 @@
         "Jeyne Swann"
     ],
     "Jeyne Westerling": [
-        "Jeyne Westerling",
-        "Westerlings"
+        "Jeyne Westerling"
     ],
     "Jhiqui": [
         "Jhiqui"
     ],
     "Jinglebell Frey": [
         "Jinglebell Frey",
-        "Jinglebell",
-        "Freys"
+        "Jinglebell"
     ],
     "Joanna": [
-        "Joanna",
-        "Lannisters"
+        "Joanna"
     ],
     "Joffrey Baratheon": [
         "Joffrey Baratheon",
-        "Baratheons",
         "Joffrey",
-        "Lannisters",
         "Joff"
     ],
     "Jogos Nhai": [
@@ -1131,7 +1071,6 @@
         "Reeds"
     ],
     "Jon Arryn": [
-        "Arryns",
         "Jon Arryn"
     ],
     "Jon Connington": [
@@ -1139,22 +1078,20 @@
         "Connington"
     ],
     "Jon Darry": [
-        "Jon Darry",
-        "Darrys"
+        "Jon Darry"
     ],
     "Jon Snow": [
         "Jon Snow",
         "Jon",
         "Jon Stark",
-        "Starks",
-        "JON"
+        "JON",
+        "Snow"
     ],
     "Jonos": [
         "Jonos"
     ],
     "Jonothor Darry": [
-        "Jonothor Darry",
-        "Darrys"
+        "Jonothor Darry"
     ],
     "Jorah Mormont": [
         "Jorah Mormont",
@@ -1188,9 +1125,7 @@
         "Karl"
     ],
     "Karlon Stark": [
-        "Karlon Stark",
-        "Starks",
-        "Karstarks"
+        "Karlon Stark"
     ],
     "Kedge Whiteye": [
         "Kedge Whiteye",
@@ -1205,8 +1140,7 @@
     ],
     "Kevan Lannister": [
         "Kevan Lannister",
-        "Kevan",
-        "Lannisters"
+        "Kevan"
     ],
     "Khal Drogo": [
         "Khal Drogo",
@@ -1224,8 +1158,7 @@
         "Khorane"
     ],
     "Knott": [
-        "Knott",
-        "Knotts"
+        "Knott"
     ],
     "Ko Jhogo": [
         "Jhogo",
@@ -1243,8 +1176,7 @@
         "Kyra"
     ],
     "Lancel": [
-        "Lancel",
-        "Lannisters"
+        "Lancel"
     ],
     "Pate of Lancewood": [
         "Pate",
@@ -1295,8 +1227,7 @@
     ],
     "Lewyn Martell": [
         "Lewyn",
-        "Lewyn Martell",
-        "Martells"
+        "Lewyn Martell"
     ],
     "Lewys": [
         "Lewys"
@@ -1306,8 +1237,7 @@
         "Leyton Hightower"
     ],
     "Liddle": [
-        "Liddle",
-        "Liddles"
+        "Liddle"
     ],
     "Lister": [
         "Lister"
@@ -1328,16 +1258,14 @@
     "Loras Tyrell": [
         "Loras Tyrell",
         "Loras",
-        "Flowers",
-        "Tyrells"
+        "Flowers"
     ],
     "Lormelle": [
         "Lormelle"
     ],
     "Lothar Frey": [
         "Lothar Frey",
-        "Lothar",
-        "Freys"
+        "Lothar"
     ],
     "Lothar Mallery": [
         "Lothar Mallery",
@@ -1353,8 +1281,7 @@
         "Lothstons"
     ],
     "Lucas Blackwood": [
-        "Lucas Blackwood",
-        "Blackwoods"
+        "Lucas Blackwood"
     ],
     "Lucas Roote": [
         "Lucas Roote",
@@ -1371,13 +1298,11 @@
     ],
     "Luthor Tyrell": [
         "Luthor",
-        "Luthor Tyrell",
-        "Tyrells"
+        "Luthor Tyrell"
     ],
     "Lyanna Stark": [
         "Lyanna",
-        "Lyanna Stark",
-        "Starks"
+        "Lyanna Stark"
     ],
     "Lychester": [
         "Lychester"
@@ -1388,13 +1313,11 @@
     ],
     "Lyn Corbray": [
         "Lyn Corbray",
-        "Corbray",
-        "Corbrays"
+        "Corbray"
     ],
     "Lynesse Hightower": [
         "Lynesse",
-        "Lynesse Hightower",
-        "Hightowers"
+        "Lynesse Hightower"
     ],
     "Lyonel Selmy": [
         "Lyonel Selmy"
@@ -1402,9 +1325,7 @@
     "Lysa Arryn": [
         "Lysa",
         "Lysa Arryn",
-        "Lysa Tully",
-        "Arryns",
-        "Tullys"
+        "Lysa Tully"
     ],
     "Lythene": [
         "Lythene"
@@ -1414,8 +1335,7 @@
         "Maege Mormont"
     ],
     "Maegor": [
-        "Maegor",
-        "Targaryens"
+        "Maegor"
     ],
     "Maelys": [
         "Maelys"
@@ -1520,8 +1440,7 @@
     ],
     "Margaery Tyrell": [
         "Margaery Tyrell",
-        "Margaery",
-        "Tyrells"
+        "Margaery"
     ],
     "Marianne": [
         "Marianne"
@@ -1547,8 +1466,7 @@
     ],
     "Martyn Lannister": [
         "Martyn",
-        "Martyn Lannister",
-        "Lannisters"
+        "Martyn Lannister"
     ],
     "Martyn Rivers": [
         "Martyn Rivers"
@@ -1568,7 +1486,8 @@
     "Mathis Rowan": [
         "Mathis",
         "Mathis Rowan",
-        "Matthis Rowan"
+        "Matthis Rowan",
+        "Rowan"
     ],
     "Matthos": [
         "Matthos"
@@ -1585,8 +1504,7 @@
         "Reeds"
     ],
     "Megga": [
-        "Megga",
-        "Tyrells"
+        "Megga"
     ],
     "Meizo Mahr": [
         "Meizo Mahr"
@@ -1611,7 +1529,6 @@
         "Merling"
     ],
     "Merlon Crakehall": [
-        "Crakehalls",
         "Merlon Crakehall"
     ],
     "Mero": [
@@ -1621,8 +1538,7 @@
     "Merrett Frey": [
         "Merrett Frey",
         "Merrett",
-        "Merrett Muttonhead",
-        "Freys"
+        "Merrett Muttonhead"
     ],
     "Merrit": [
         "Merrit"
@@ -1702,16 +1618,14 @@
         "Myranda"
     ],
     "Myrcella": [
-        "Myrcella",
-        "Lannisters"
+        "Myrcella"
     ],
     "Myria Jordayne": [
         "Jordayne",
         "Myria Jordayne"
     ],
     "Naerys": [
-        "Naerys",
-        "Targaryens"
+        "Naerys"
     ],
     "Nage": [
         "Nage"
@@ -1738,13 +1652,11 @@
     "Oberyn Nymeros Martell": [
         "Oberyn Nymeros Martell",
         "Oberyn",
-        "Oberyn Martell",
-        "Martells"
+        "Oberyn Martell"
     ],
     "Olenna Tyrell": [
         "Olenna Tyrell",
         "Olenna",
-        "Tyrells",
         "Thorns"
     ],
     "Ollo Lophand": [
@@ -1753,8 +1665,7 @@
     ],
     "Olyvar Frey": [
         "Olyvar",
-        "Olyvar Frey",
-        "Freys"
+        "Olyvar Frey"
     ],
     "Omer": [
         "Omer"
@@ -1797,8 +1708,7 @@
     ],
     "Oswell Whent": [
         "Oswell Whent",
-        "Whent",
-        "Whents"
+        "Whent"
     ],
     "Oswyn Longneck": [
         "Oswyn Longneck"
@@ -1819,8 +1729,7 @@
     "Owen Norrey": [
         "Norrey",
         "Owen",
-        "Owen Norrey",
-        "Norreys"
+        "Owen Norrey"
     ],
     "Oznak": [
         "Oznak",
@@ -1839,8 +1748,7 @@
         "Patches"
     ],
     "Patrek Mallister": [
-        "Patrek Mallister",
-        "Mallisters"
+        "Patrek Mallister"
     ],
     "Small Paul": [
         "Paul",
@@ -1860,8 +1768,7 @@
     ],
     "Perwyn Frey": [
         "Perwyn",
-        "Perwyn Frey",
-        "Freys"
+        "Perwyn Frey"
     ],
     "Petyr Baelish": [
         "Petyr Baelish",
@@ -1922,8 +1829,7 @@
         "Quenn"
     ],
     "Quentyn Martell": [
-        "Quentyn Martell",
-        "Martells"
+        "Quentyn Martell"
     ],
     "Quort": [
         "Quort"
@@ -1940,8 +1846,7 @@
     ],
     "Ramsay Snow": [
         "Ramsay",
-        "Ramsay Snow",
-        "Boltons"
+        "Ramsay Snow"
     ],
     "Randa": [
         "Randa"
@@ -1963,67 +1868,56 @@
         "Raymar Royce"
     ],
     "Raymun Darry": [
-        "Raymun Darry",
-        "Darrys"
+        "Raymun Darry"
     ],
     "Raymun Redbeard": [
         "Raymun Redbeard"
     ],
     "Raymund Frey": [
         "Raymund",
-        "Raymund Frey",
-        "Freys"
+        "Raymund Frey"
     ],
     "Raynald Westerling": [
         "Raynald Westerling",
-        "Raynald",
-        "Westerlings"
+        "Raynald"
     ],
     "Redforts": [
         "Redforts"
     ],
     "Renly Baratheon": [
         "Renly",
-        "Renly Baratheon",
-        "Baratheons"
+        "Renly Baratheon"
     ],
     "Reynes": [
         "Reynes"
     ],
     "Rhaegar Targaryen": [
         "Rhaegar Targaryen",
-        "Rhaegar",
-        "Targaryens"
+        "Rhaegar"
     ],
     "Rhaego": [
         "Rhaego"
     ],
     "Rhaella": [
-        "Rhaella",
-        "Targaryens"
+        "Rhaella"
     ],
     "Rhaenyra Targaryen": [
-        "Rhaenyra Targaryen",
-        "Targaryens"
+        "Rhaenyra Targaryen"
     ],
     "Rhaenys": [
-        "Rhaenys",
-        "Targaryens"
+        "Rhaenys"
     ],
     "Richard Lonmouth": [
         "Richard Lonmouth"
     ],
     "Rickard Karstark": [
-        "Karstarks",
         "Rickard Karstark"
     ],
     "Rickard Stark": [
-        "Rickard Stark",
-        "Starks"
+        "Rickard Stark"
     ],
     "Rickon": [
-        "Rickon",
-        "Starks"
+        "Rickon"
     ],
     "Robar Royce": [
         "Robar Royce",
@@ -2031,17 +1925,14 @@
     ],
     "Robb Stark": [
         "Robb",
-        "Starks",
         "Robb Stark",
         "Robb Starks"
     ],
     "Robert Arryn": [
-        "Robert Arryn",
-        "Arryns"
+        "Robert Arryn"
     ],
     "Robert Baratheon": [
         "Robert Baratheon",
-        "Baratheons",
         "Robert"
     ],
     "Robett Glover": [
@@ -2049,12 +1940,10 @@
         "Robett"
     ],
     "Robin Flint": [
-        "Robin Flint",
-        "Flints"
+        "Robin Flint"
     ],
     "Rodrik Flint": [
-        "Rodrik Flint",
-        "Flints"
+        "Rodrik Flint"
     ],
     "Rodrik Cassel": [
         "Rodrik Cassel",
@@ -2062,12 +1951,10 @@
     ],
     "Roland Crakehall": [
         "Roland Crakehall",
-        "Crakehall",
-        "Crakehalls"
+        "Crakehall"
     ],
     "Rollam Westerling": [
         "Rollam Westerling",
-        "Westerlings",
         "Rollam"
     ],
     "Rolland": [
@@ -2079,19 +1966,16 @@
     ],
     "Rolph Spicer": [
         "Rolph",
-        "Rolph Spicer",
-        "Spicers"
+        "Rolph Spicer"
     ],
     "Ronnel Harclay": [
         "Ronnel Harclay",
-        "Harclays",
         "Ronnel"
     ],
     "Roose Bolton": [
         "Roose Bolton",
         "Roose",
-        "Bolton",
-        "Boltons"
+        "Bolton"
     ],
     "Rorge": [
         "Rorge"
@@ -2103,8 +1987,7 @@
     "Roslin Frey": [
         "Roslin Tully",
         "Roslin",
-        "Roslin Frey",
-        "Freys"
+        "Roslin Frey"
     ],
     "Rossart": [
         "Rossart"
@@ -2125,8 +2008,7 @@
     ],
     "Ryman Frey": [
         "Ryman",
-        "Ryman Frey",
-        "Freys"
+        "Ryman Frey"
     ],
     "Rymund": [
         "Rymund"
@@ -2164,8 +2046,7 @@
         "Samwell"
     ],
     "Samwell Spicer": [
-        "Samwell Spicer",
-        "Spicers"
+        "Samwell Spicer"
     ],
     "Sandor Clegane": [
         "Sandor",
@@ -2177,7 +2058,6 @@
     ],
     "Sansa Stark": [
         "Sansa Stark",
-        "Starks",
         "Sansa"
     ],
     "Sarra": [
@@ -2194,7 +2074,6 @@
     ],
     "Selsye": [
         "Selsye",
-        "Florents",
         "Selyse"
     ],
     "Selwyn of Tarth": [
@@ -2242,8 +2121,7 @@
         "Sherrit"
     ],
     "Shireen": [
-        "Shireen",
-        "Baratheons"
+        "Shireen"
     ],
     "Shirei": [
         "Shirei"
@@ -2263,7 +2141,6 @@
         "Sisterman"
     ],
     "Smalljon": [
-        "Umbers",
         "Smalljon"
     ],
     "Softfoot": [
@@ -2281,7 +2158,6 @@
     "Stannis Baratheon": [
         "Stannis",
         "STANNIS",
-        "Baratheons",
         "Stannis Baratheon"
     ],
     "Steelshanks Walton": [
@@ -2291,15 +2167,13 @@
     ],
     "Steffon Baratheon": [
         "Steffon",
-        "Baratheons",
         "Steffon Baratheon"
     ],
     "Stevron": [
         "Stevron"
     ],
     "Strongboar": [
-        "Strongboar",
-        "Crackehalls"
+        "Strongboar"
     ],
     "Styr": [
         "Styr"
@@ -2310,13 +2184,11 @@
     "Sumner Crakehall": [
         "Sumner Crake-hall",
         "Sumner Crakehall",
-        "Sumner",
-        "Crakehalls"
+        "Sumner"
     ],
     "Sybell Spicer": [
         "Sybell Spicer",
-        "Sybell",
-        "Spicers"
+        "Sybell"
     ],
     "Symeon Star-Eyes": [
         "Symeon Star-Eyes"
@@ -2341,23 +2213,19 @@
         "Tanda"
     ],
     "Tarbeck": [
-        "Tarbeck",
-        "Tarbecks"
+        "Tarbeck"
     ],
     "Templeton": [
-        "Templeton",
-        "Templetons"
+        "Templeton"
     ],
     "Theo Wull": [
         "Theo Wull",
         "Theo",
-        "Wull",
-        "Wulls"
+        "Wull"
     ],
     "Theon Greyjoy": [
         "Theon",
-        "Theon Greyjoy",
-        "Greyjoys"
+        "Theon Greyjoy"
     ],
     "Thoren Smallwood": [
         "Thoren",
@@ -2385,8 +2253,7 @@
     ],
     "Tion Frey": [
         "Tion",
-        "Tion Frey",
-        "Freys"
+        "Tion Frey"
     ],
     "Tobho Mott": [
         "Mott",
@@ -2404,9 +2271,7 @@
         "Tom Sevensons",
         "Tom Sevenstrings"
     ],
-    "Tommen": [
-        "Baratheons",
-        "Lannisters",
+    "Tommen": [ 
         "Tommen"
     ],
     "Toregg": [
@@ -2425,8 +2290,7 @@
     ],
     "Tremond Gargalen": [
         "Tremond Gargalen",
-        "Gargalen",
-        "Gargalens"
+        "Gargalen"
     ],
     "Tristan Mudd": [
         "Tristan Mudd",
@@ -2442,8 +2306,7 @@
         "Triston"
     ],
     "Trystane": [
-        "Trystane",
-        "Martells"
+        "Trystane"
     ],
     "Tumberjon": [
         "Tumberjon"
@@ -2452,16 +2315,14 @@
         "Tygett"
     ],
     "Tyrek": [
-        "Tyrek",
-        "Lannisters"
+        "Tyrek"
     ],
     "Tyrion Lannister": [
         "Tyrion",
         "Halfman",
         "Imp",
         "Tyrion Lannister",
-        "Imp Tyrion Lannister",
-        "Lannisters"
+        "Imp Tyrion Lannister"
     ],
     "Tysha": [
         "Tysha"
@@ -2470,18 +2331,15 @@
         "Tyta"
     ],
     "Tytos Blackwood": [
-        "Tytos Blackwood",
-        "Blackwoods"
+        "Tytos Blackwood"
     ],
     "Tytos Lannister": [
         "Tytos Lannister",
-        "Tytos",
-        "Lannisters"
+        "Tytos"
     ],
     "Tywin Lannister": [
         "Tywin",
-        "Tywin Lannister",
-        "Lannisters"
+        "Tywin Lannister"
     ],
     "Ulmer": [
         "Ulmer"
@@ -2523,32 +2381,26 @@
         "Varys"
     ],
     "Victarion": [
-        "Victarion",
-        "Greyjoys"
+        "Victarion"
     ],
     "Visenya": [
-        "Visenya",
-        "Targaryens"
+        "Visenya"
     ],
     "Viserys": [
-        "Viserys",
-        "Targaryens"
+        "Viserys"
     ],
     "Walda Frey": [
         "Walda",
         "Aemon Rivers Walda",
         "Walda Frey",
-        "Walda Bolton",
-        "Freys"
+        "Walda Bolton"
     ],
     "Walder Frey": [
         "Walder",
-        "Walder Frey",
-        "Freys"
+        "Walder Frey"
     ],
     "Walder Rivers": [
-        "Walder Rivers",
-        "Freys"
+        "Walder Rivers"
     ],
     "Walders": [
         "Walders"
@@ -2574,14 +2426,12 @@
     ],
     "Wendel Manderly": [
         "Wendel Manderly",
-        "Wendel",
-        "Manderlys"
+        "Wendel"
     ],
     "Wensington": [
         "Wensington"
     ],
     "Whalen Frey": [
-        "Freys",
         "Whalen Frey"
     ],
     "Wilbert": [
@@ -2589,16 +2439,13 @@
     ],
     "Willas Tyrell": [
         "Willas",
-        "Willas Tyrell",
-        "Tyrells"
+        "Willas Tyrell"
     ],
     "Willem Darry": [
-        "Willem Darry",
-        "Darrys"
+        "Willem Darry"
     ],
     "Willem Lannister": [
-        "Willem Lannister",
-        "Lannisters"
+        "Willem Lannister"
     ],
     "Willum": [
         "Willum"
@@ -2611,7 +2458,6 @@
     ],
     "Wylis Manderly": [
         "Manderly",
-        "Manderlys",
         "Wylis Manderly",
         "Wylis"
     ],
