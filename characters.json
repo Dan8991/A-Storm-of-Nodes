@@ -314,6 +314,7 @@
         "Brackens"
     ],
     "Brandon Stark": [
+        "Bran",
         "Brandon Stark",
         "Brandon",
         "Starks"
@@ -756,6 +757,9 @@
     "Garigus": [
         "Garigus"
     ],
+    "Garse Goodbrook": [
+        "Garse Goodbrook"
+    ],
     "Garlan Tyrell": [
         "Garlan",
         "Garlan Tyrell",
@@ -1061,6 +1065,9 @@
         "Jaremy Rykker",
         "Rykker"
     ],
+    "Jared": [
+        "Jared"
+    ],
     "Jarl": [
         "Jarl"
     ],
@@ -1132,7 +1139,8 @@
         "Connington"
     ],
     "Jon Darry": [
-        "Jon Darry"
+        "Jon Darry",
+        "Darrys"
     ],
     "Jon Snow": [
         "Jon Snow",
@@ -1145,7 +1153,8 @@
         "Jonos"
     ],
     "Jonothor Darry": [
-        "Jonothor Darry"
+        "Jonothor Darry",
+        "Darrys"
     ],
     "Jorah Mormont": [
         "Jorah Mormont",
@@ -1229,6 +1238,9 @@
     "Kyle Condon": [
         "Kyle",
         "Kyle Condon"
+    ],
+    "Kyra": [
+        "Kyra"
     ],
     "Lancel": [
         "Lancel",
@@ -1609,6 +1621,7 @@
     "Merrett Frey": [
         "Merrett Frey",
         "Merrett",
+        "Merrett Muttonhead",
         "Freys"
     ],
     "Merrit": [
@@ -1950,7 +1963,8 @@
         "Raymar Royce"
     ],
     "Raymun Darry": [
-        "Raymun Darry"
+        "Raymun Darry",
+        "Darrys"
     ],
     "Raymun Redbeard": [
         "Raymun Redbeard"
@@ -2579,7 +2593,8 @@
         "Tyrells"
     ],
     "Willem Darry": [
-        "Willem Darry"
+        "Willem Darry",
+        "Darrys"
     ],
     "Willem Lannister": [
         "Willem Lannister",
