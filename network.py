@@ -263,6 +263,69 @@ def clean_network(A):
     return A
 
 '''
+A = sparse csr_matrix
+starting_node = node from which you want to start BFS 
+return = array of distances between node i and the starting node, 
+all distances to unreachable nodes are set to -1
+'''
+def breadth_first_search(A, starting_node):
+    
+    #type checking
+    assert type(A) == sp.sparse.csr.csr_matrix
+    N = A.shape[0]
+    assert type(starting_node) == int and starting_node < N
+    
+    #non visited nodes will have value 1
+    not_visited = np.ones((N, 1))
+    
+    e1 = np.zeros((N,1))
+    
+    #setting to 1 one of the node of the GC
+    e1[starting_node] = 1
+
+    distances = -np.ones((N, 1))
+    dist = 0
+    #exit condition
+    ex = False
+
+    while not ex:
+        dist += 1
+        e1_old = e1
+        
+        #searching for nodes connected to the nodes in e1
+        e1 = (A * e1 + e1) > 0
+        #searching new nodes
+        new_nodes = e1 != e1_old
+
+        distances[new_nodes] = dist
+
+        #checking if no new nodes were added to the list
+        ex = not np.sum(new_nodes)
+
+    return distances
+
+def get_distance_distribution(A):
+    
+    #type checking
+    assert type(A) == sp.sparse.csr.csr_matrix
+
+    N = A.shape[0]
+
+    #empty array to be later concatenated
+    distances = np.zeros((0,1))
+    
+    #getting distances for all nodes
+    for i in range(N - 1):
+        dist = breadth_first_search(A, i)
+
+        #only adding distances to nodes after the considered one
+        #because the previous ones were already calcolated
+        distances = np.concatenate([distances, dist[(i + 1):]], axis=0)
+    
+    return np.unique(distances, return_counts = True)
+
+
+'''
 A = density matrix as a csr_matrix
 neigh_dir = direction in which to calculate the degree of the nodes can be "in" or "out"
 knn_dir = direction in which the average neighbours degree is calculated can be "in" or "out"
