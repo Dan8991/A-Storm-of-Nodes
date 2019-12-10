@@ -175,13 +175,15 @@ def get_characters_dictionary(dictionary):
     return ret
 
 
-if (len(sys.argv) > 1) and (sys.argv[1] == "parse"):
+if (len(sys.argv) > 2) and (sys.argv[1] == "parse"):
 
-    with open("storm_of_swords.txt", "r") as f:
+    with open(sys.argv[2], "r") as f:
         lines = [parse_punctuation(line) for line in f]
 
-    with open("storm_of_swords.txt", "w") as f:
+    with open(sys.argv[2], "w") as f:
         f.writelines(lines)
+    
+    sys.exit(0)
 
 pdf_file = open("storm_of_swords.txt", 'r')
 
