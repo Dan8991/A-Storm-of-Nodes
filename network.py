@@ -275,9 +275,6 @@ def breadth_first_search(A, starting_node):
     N = A.shape[0]
     assert type(starting_node) == int and starting_node < N
     
-    #non visited nodes will have value 1
-    not_visited = np.ones((N, 1))
-    
     e1 = np.zeros((N,1))
     
     #setting to 1 one of the node of the GC
