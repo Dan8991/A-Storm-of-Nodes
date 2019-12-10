@@ -68,7 +68,11 @@ class Chapter(object):
             r"\n", "", self.title[0] + self.title[1:].lower())
 
         protagonist_id = -1
-        if protagonist_name != "Prologue" and protagonist_name != "Epilogue":
+        if protagonist_name == "Prologue":
+            protagonist_id = characters_id[characters["Chett"][0]]
+        elif protagonist_name == "Epilogue":
+            protagonist_id = characters_id[characters["Merrett"][0]]
+        else:
             protagonist_id = characters_id[characters[protagonist_name][0]]
 
         current_index = 0
