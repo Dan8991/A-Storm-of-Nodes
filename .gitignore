@@ -4,3 +4,4 @@ clash_of_kings.*
 connections.csv
 __pycache__
 nodes.csv
+.ipynb_checkpoints
