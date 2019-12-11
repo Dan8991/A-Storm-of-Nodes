@@ -81,13 +81,15 @@ class Chapter(object):
         for i in range(len(valid_char)):
 
             if protagonist_id != -1:
-                connections.append((protagonist_id, valid_char[i][0]))
+                if protagonist_id != valid_char[i][0]:
+                    connections.append((protagonist_id, valid_char[i][0]))
 
             while (valid_char[i][1] - link_length) > valid_char[current_index][1]:
                 current_index += 1
 
             for j in range(current_index, i):
-                connections.append((valid_char[j][0], valid_char[i][0]))
+                if valid_char[j][0] != valid_char[i][0]:
+                    connections.append((valid_char[j][0], valid_char[i][0]))
 
         return connections
 
