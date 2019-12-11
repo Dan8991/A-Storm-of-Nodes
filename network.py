@@ -373,3 +373,39 @@ def get_assortativity_value(A, neigh_dir = "out", knn_dir = "out"):
 
     #returning the slope of the linear model
     return p, unique, knn, temp_knn
+
+def get_clusteing_coefficient(A, node):
+    
+    assert type(A) == sp.sparse.csr.csr_matrix
+    N = A.shape[0]
+    assert type(node) == int and node < N
+
+    e = np.zeros((N, 1))
+    e[node] = 1
+
+    neighbours = A * e
+
+    neigh_num = np.sum(neighbours)
+
+    neighbours = np.reshape(neighbours, [N]) == 1
+
+    neigh_subgraph = A[neighbours, :][:, neighbours]
+    
+    neigh_conn = np.sum(neigh_subgraph) / 2
+
+    conn_max = neigh_num * (neigh_num - 1) / 2
+
+    if conn_max == 0:
+        return 0
+
+    return neigh_conn/conn_max
+    
+def get_clustering_coefficients(A):
+    
+    assert type(A) == sp.sparse.csr.csr_matrix
+    N = A.shape[0]
+    
+    return np.array([get_clusteing_coefficient(A, i) for i in range(N)])
+
+def get_clustering_distribution(A):
+    return get_neighbours_pdf(get_clustering_coefficients(A))
