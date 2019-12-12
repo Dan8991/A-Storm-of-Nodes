@@ -1,7 +1,7 @@
 import numpy as np
 import scipy as sp
 import pandas as pd
-
+from random import uniform
 '''
 arr = np array from which values are removed
 relative_to = if this value is not None then the values from arr are removed where relative_to == 0
@@ -458,3 +458,31 @@ def get_gc_dimension_removing_nodes(A, remove_order):
         gc_dimension.append(clean_network(A).shape[0])
     
     return gc_dimension
+
+#Chung Lu model
+def random_rewiring(A):
+    
+    assert type(A) == sp.sparse.csr_matrix
+
+    degrees = get_degrees(A)
+    
+    N = A.shape[0]
+
+    A_rand = np.zeros((N, N))
+
+    double_tot_conn = np.sum(degrees)
+
+    connections = [ (x,y) for x in range(N - 1) for y in range(x + 1, N)]
+    for connection in connections:
+        i, j = connection
+        ki = degrees[i]
+        kj = degrees[j]
+        keep = uniform(0, 1)
+        if keep < ki*kj/double_tot_conn:
+            A_rand[i, j] = 1
+            A_rand[j, i] = 1
+
+    print(np.sum(degrees-get_degrees(A_rand)))
+    print(np.sum(np.abs(degrees-get_degrees(A_rand))))
+
+    return A_rand
