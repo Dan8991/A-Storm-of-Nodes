@@ -409,3 +409,20 @@ def get_clustering_coefficients(A):
 
 def get_clustering_distribution(A):
     return get_neighbours_pdf(get_clustering_coefficients(A))
+
+def get_temporal_distribution(A, nodes):
+    
+    temporal = []
+    
+    for chap in nodes:
+        if len(chap) > 0:
+            edges = np.array(chap)
+            A = A.tolil()
+            A[edges[:, 0], edges[:, 1]] = 1
+            A[edges[:, 0], edges[:, 1]] = 1
+            A = A.tocsr()
+            degrees = get_degrees(A)
+            temporal.append(degrees)
+    
+    return np.array(temporal)
+            
