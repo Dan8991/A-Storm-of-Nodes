@@ -222,41 +222,28 @@ def clean_network(A):
 
     #size of the biggest component found until now
     biggest_component = 0
-    best_e1 = None
+    best = None
 
     while np.sum(not_visited) > biggest_component:
 
         #get first non zero index
         index = np.where(not_visited)[0][0]
         
-        e1 = np.zeros((N,1))
-        
-        #setting to 1 one of the node of the GC
-        e1[index] = 1
+        #getting the distance from the node to all other nodes 
+        #non reached nodes have distance -1
+        distances = breadth_first_search(Au, int(index))
+        connected = distances >= 0
 
-        #exit condition
-        ex = False
-
-        while not ex:
-
-            e1_old = e1
-            
-            #searching for nodes connected to the nodes in e1
-            e1 = (Au * e1 + e1) > 0
-
-            #checking if no new nodes were added to the list
-            ex = not np.sum(e1 != e1_old)
-        
-        #setting all visited nodes = 0
-        not_visited = not_visited - e1
+        # #setting all visited nodes = 0
+        not_visited = not_visited - connected
         
         #select the best bigger component
-        if np.sum(e1) > biggest_component:
-            best_e1 = e1
-            biggest_component = np.sum(e1)
+        if np.sum(connected) > biggest_component:
+            best = connected
+            biggest_component = np.sum(connected)
 
-    e1 = np.reshape(best_e1, (N))
-    
+    e1 = np.reshape(best, (N))
+
     #this is apparently the most efficient way of slicing a sparse matrix
     A = A[e1, :][:, e1]
 
@@ -281,6 +268,7 @@ def breadth_first_search(A, starting_node):
     e1[starting_node] = 1
 
     distances = -np.ones((N, 1))
+    distances[starting_node] = 0
     dist = 0
     #exit condition
     ex = False
@@ -411,6 +399,9 @@ def get_clustering_distribution(A):
     return get_neighbours_pdf(get_clustering_coefficients(A))
 
 def get_temporal_distribution(A, nodes):
+
+    assert type(A) == sp.sparse.csr_matrix
+    assert type(nodes) == list
     
     temporal = []
     
@@ -425,4 +416,3 @@ def get_temporal_distribution(A, nodes):
             temporal.append(degrees)
     
     return np.array(temporal)
-            
