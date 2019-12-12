@@ -416,3 +416,45 @@ def get_temporal_distribution(A, nodes):
             temporal.append(degrees)
     
     return np.array(temporal)
+
+def check_robustness(A):
+
+    assert type(A) == sp.sparse.csr_matrix
+
+    return random_node_removal(A), attack_node_removal(A)
+
+def random_node_removal(A):
+
+    assert type(A) == sp.sparse.csr_matrix
+
+    A1 = sp.sparse.csr_matrix(A, copy = True)
+    N = A1.shape[0]
+    remove_order = np.random.permutation(N)
+
+    return get_gc_dimension_removing_nodes(A1, remove_order)
+
+
+def attack_node_removal(A): 
+    
+    assert type(A) == sp.sparse.csr_matrix
+    
+    A1 = sp.sparse.csr_matrix(A, copy = True)
+    degrees = get_degrees(A1)
+    remove_order = np.argsort(degrees, axis = 0)
+    remove_order = remove_order[::-1]
+
+    return get_gc_dimension_removing_nodes(A1, remove_order)
+
+def get_gc_dimension_removing_nodes(A, remove_order):
+    
+    assert type(A) == sp.sparse.csr_matrix
+    assert type(remove_order) == list or type(remove_order) == np.ndarray
+
+    gc_dimension = []
+
+    for remove in remove_order:
+        A[remove, :] = 0
+        A[:, remove] = 0
+        gc_dimension.append(clean_network(A).shape[0])
+    
+    return gc_dimension
