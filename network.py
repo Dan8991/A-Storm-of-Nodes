@@ -459,30 +459,22 @@ def get_gc_dimension_removing_nodes(A, remove_order):
     
     return gc_dimension
 
-#Chung Lu model
+#Molloy Reed
 def random_rewiring(A):
     
     assert type(A) == sp.sparse.csr_matrix
-
-    degrees = get_degrees(A)
     
     N = A.shape[0]
 
+    degrees = get_degrees(A).reshape(N)
+
     A_rand = np.zeros((N, N))
 
-    double_tot_conn = np.sum(degrees)
+    indexes = np.arange(N)
 
-    connections = [ (x,y) for x in range(N - 1) for y in range(x + 1, N)]
-    for connection in connections:
-        i, j = connection
-        ki = degrees[i]
-        kj = degrees[j]
-        keep = uniform(0, 1)
-        if keep < ki*kj/double_tot_conn:
-            A_rand[i, j] = 1
-            A_rand[j, i] = 1
-
-    print(np.sum(degrees-get_degrees(A_rand)))
-    print(np.sum(np.abs(degrees-get_degrees(A_rand))))
+    connections = np.random.permutation(np.repeat(indexes, degrees))
+    x = np.concatenate([connections[0::2], connections[1::2]])
+    y = np.concatenate([connections[1::2], connections[0::2]])
+    A_rand = sp.sparse.csr_matrix((np.ones(len(x)), (x, y)), shape=(N,N), dtype = np.int32)
 
     return A_rand
