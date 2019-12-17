@@ -6,3 +6,4 @@ __pycache__
 nodes.csv
 .ipynb_checkpoints
 connections_for_temp.csv
+latex
