@@ -461,19 +461,27 @@ def attack_node_removal(A):
 
     return get_gc_dimension_removing_nodes(A1, remove_order)
 
+def get_inhomogeneity(degrees):
+    mean_degree = np.mean(degrees)
+    if mean_degree == 0:
+        return 0
+    return sp.stats.moment(degrees, moment=2)/mean_degree
+
 def get_gc_dimension_removing_nodes(A, remove_order):
     
     assert type(A) == sp.sparse.csr_matrix
     assert type(remove_order) == list or type(remove_order) == np.ndarray
 
     gc_dimension = []
-
+    inhomogeneity_break = 0
     for remove in remove_order:
         A[remove, :] = 0
         A[:, remove] = 0
         gc_dimension.append(clean_network(A).shape[0])
+        if get_inhomogeneity(get_degrees(A)) > 2:
+            inhomogeneity_break += 1
     
-    return gc_dimension
+    return gc_dimension, inhomogeneity_break
 
 #Molloy Reed
 def random_rewiring(A):
