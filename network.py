@@ -264,24 +264,34 @@ def breadth_first_search(A, starting_node):
     
     e1 = np.zeros((N,1))
     
-    #setting to 1 one of the node of the GC
+    #setting to 1 the value corresponding to the starting node
     e1[starting_node] = 1
 
+    #all distances are set to -1 except from the one corresponding to the starting
+    #node that is obviously 0
     distances = -np.ones((N, 1))
     distances[starting_node] = 0
+
+    #value counting the distance from the starting node
     dist = 0
+    
     #exit condition
     ex = False
 
     while not ex:
+
+        #distance is increased at every step
         dist += 1
+
         e1_old = e1
         
         #searching for nodes connected to the nodes in e1
         e1 = (A * e1 + e1) > 0
-        #searching new nodes
+
+        #finidng out new nodes
         new_nodes = e1 != e1_old
 
+        #setting the distances of the new nodes to the starting node
         distances[new_nodes] = dist
 
         #checking if no new nodes were added to the list
@@ -371,18 +381,24 @@ def get_clusteing_coefficient(A, node):
     e = np.zeros((N, 1))
     e[node] = 1
 
+    #finding the neighbours of node and their number
     neighbours = A * e
-
     neigh_num = np.sum(neighbours)
 
+    #reshape needed for slicing
     neighbours = np.reshape(neighbours, [N]) == 1
 
+    #getting the subgraph contanining only the neighbours of node
     neigh_subgraph = A[neighbours, :][:, neighbours]
     
+    #finding the number of connections between the neighbours
     neigh_conn = np.sum(neigh_subgraph) / 2
 
+    #maximum number of connections between the neighbours
     conn_max = neigh_num * (neigh_num - 1) / 2
 
+    #handles the case when there is only one neighbour
+    #in this case the clustering coefficient is 0
     if conn_max == 0:
         return 0
 
@@ -410,7 +426,7 @@ def get_temporal_distribution(A, nodes):
             edges = np.array(chap)
             A = A.tolil()
             A[edges[:, 0], edges[:, 1]] = 1
-            A[edges[:, 0], edges[:, 1]] = 1
+            A[edges[:, 1], edges[:, 0]] = 1
             A = A.tocsr()
             degrees = get_degrees(A)
             temporal.append(degrees)
