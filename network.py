@@ -299,6 +299,10 @@ def breadth_first_search(A, starting_node):
 
     return distances
 
+'''
+A = sparse matrix whose distance distribution is calculated
+return = unique distances and how many time each distance is found
+'''
 def get_distance_distribution(A):
     
     #type checking
@@ -372,6 +376,12 @@ def get_assortativity_value(A, neigh_dir = "out", knn_dir = "out"):
     #returning the slope of the linear model
     return p, unique, knn, temp_knn
 
+'''
+A = sparse matrix from which the clustering coeffitients have to be calculated
+node = nod whose clustering coefficient is calculated
+return = clustering coefficient of node
+'''
+
 def get_clusteing_coefficient(A, node):
     
     assert type(A) == sp.sparse.csr.csr_matrix
@@ -403,7 +413,11 @@ def get_clusteing_coefficient(A, node):
         return 0
 
     return neigh_conn/conn_max
-    
+
+'''
+A = sparse matrix from which the clustering coeffitients have to be calculated
+return = clustering coefficients
+'''
 def get_clustering_coefficients(A):
     
     assert type(A) == sp.sparse.csr.csr_matrix
@@ -411,62 +425,124 @@ def get_clustering_coefficients(A):
     
     return np.array([get_clusteing_coefficient(A, i) for i in range(N)])
 
+'''
+A = sparse matrix from which the clustering distribution has to be calculated
+return = clustering coefficients unique values and PDF
+'''
 def get_clustering_distribution(A):
     return get_neighbours_pdf(get_clustering_coefficients(A))
 
-def get_temporal_distribution(A, nodes):
+'''
+N = nodes in the network
+nodes = array of arrays of connections, one array of connections for each character
+return = matrix where each column is the temporal evolution of a character
+'''
+def get_temporal_distribution(N, nodes):
 
-    assert type(A) == sp.sparse.csr_matrix
+    assert type(N) == int
     assert type(nodes) == list
-    
+
+    #initializing matrix and return value
+    A = sp.sparse.csr_matrix((N, N))
     temporal = []
-    
+
+    #iterating through each chapter
     for chap in nodes:
+
+        #check needed because some chapters might be empty
         if len(chap) > 0:
+
             edges = np.array(chap)
+
+            #converting sparse matrix to a type where assignment is faster
             A = A.tolil()
+
+            #adding the connections formed in the chapter
             A[edges[:, 0], edges[:, 1]] = 1
             A[edges[:, 1], edges[:, 0]] = 1
+
+            #converting the matrix back to a type where operations are faster
             A = A.tocsr()
+
+            #getting degrees and adding them to the return list
             degrees = get_degrees(A)
             temporal.append(degrees)
     
     return np.array(temporal)
 
+'''
+A = sparse matrix used for the robustness check
+return = array of GC dimensions and # of nodes removed before breakdown both for random and hubs removal
+'''
 def check_robustness(A):
 
     assert type(A) == sp.sparse.csr_matrix
 
     return random_node_removal(A), attack_node_removal(A)
 
+'''
+A = sparse matrix where hub removal is performed
+return = array of GC dimensions and # of removal needed to break the GC
+'''
 def random_node_removal(A):
 
     assert type(A) == sp.sparse.csr_matrix
 
+    #copying the matrix in order to avoid side effects
     A1 = sp.sparse.csr_matrix(A, copy = True)
+
+    #getting a random array as the order of removal
     N = A1.shape[0]
     remove_order = np.random.permutation(N)
 
     return get_gc_dimension_removing_nodes(A1, remove_order)
 
-
+'''
+A = sparse matrix where hub removal is performed
+return = array of GC dimensions and # of removal needed to break the GC
+'''
 def attack_node_removal(A): 
     
     assert type(A) == sp.sparse.csr_matrix
     
+    #copying the matrix in order to avoid side effects
     A1 = sp.sparse.csr_matrix(A, copy = True)
+
+    #getting the degrees in order to know which are the hubs
     degrees = get_degrees(A1)
+
+    #getting the indexes that would sort the array
     remove_order = np.argsort(degrees, axis = 0)
+
+    #getting the indexes of the hubs at the beginning of the array
     remove_order = remove_order[::-1]
 
     return get_gc_dimension_removing_nodes(A1, remove_order)
 
+
+'''
+degrees = array of degrees of the nodes in the network
+return = inhomogeneity value
+'''
 def get_inhomogeneity(degrees):
+
+    #calculating mean degree
     mean_degree = np.mean(degrees)
+    
+    #this happens if there isn't a network anymore
     if mean_degree == 0:
         return 0
+
     return sp.stats.moment(degrees, moment=2)/mean_degree
 
+
+'''
+A = sparse matrix from where the nodes have to be removed
+remove_order = array of indexes, nodes are removed accordingly to theese indexes
+return:
+gc_dimension = array of dimensions of the GC after every removal
+inhomogeneity_break = # of removal needed for the GC to dissapear
+'''
 def get_gc_dimension_removing_nodes(A, remove_order):
     
     assert type(A) == sp.sparse.csr_matrix
@@ -474,16 +550,27 @@ def get_gc_dimension_removing_nodes(A, remove_order):
 
     gc_dimension = []
     inhomogeneity_break = 0
+
+    #removing nodes based on remove_order
     for remove in remove_order:
+
+        #removing node
         A[remove, :] = 0
         A[:, remove] = 0
+
+        #calculating and saving the current GC dimension
         gc_dimension.append(clean_network(A).shape[0])
+
+        #calculating inhomogeneity ratio and updating the counting variable while it is > 2
         if get_inhomogeneity(get_degrees(A)) > 2:
             inhomogeneity_break += 1
     
     return gc_dimension, inhomogeneity_break
 
-#Molloy Reed
+'''
+A = sparse matrix whose links have to be rewired
+return = matrix generated with the Molloy Reed algorithm.
+'''
 def random_rewiring(A):
     
     assert type(A) == sp.sparse.csr_matrix
@@ -492,13 +579,17 @@ def random_rewiring(A):
 
     degrees = get_degrees(A).reshape(N)
 
-    A_rand = np.zeros((N, N))
-
+    #array of numbers that goes from 0 to N
     indexes = np.arange(N)
 
+    #permuting an array that contains and index i d_i times, where d_i is the degree of node i
     connections = np.random.permutation(np.repeat(indexes, degrees))
+
+    #x = index of first node index of the second node to be connected, y = index of second node to be connected
     x = np.concatenate([connections[0::2], connections[1::2]])
     y = np.concatenate([connections[1::2], connections[0::2]])
+    
+    #building up the adjacency matrix with the previously created random connections
     A_rand = sp.sparse.csr_matrix((np.ones(len(x)), (x, y)), shape=(N,N), dtype = np.int32)
 
     return A_rand
