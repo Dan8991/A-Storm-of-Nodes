@@ -708,3 +708,63 @@ def get_two_highest_eigenvalues(A):
     val, vec = sp.sparse.linalg.eigs(A, 2)
 
     return val
+
+'''
+A = sparse matrix
+return = HITS rank of A obtained by finding the eigenvector relative to the second highest eigenvalue
+'''
+def hits_linear_system(A):
+
+    assert type(A) == sp.sparse.csr_matrix
+
+    #getting the M matrix used in HITS
+    M = A * A.T
+
+    #getting the highest eigenvalues and the relative eigenvectors
+    M = M.astype(float)
+    val, vec = sp.sparse.linalg.eigs(M, k = 2)
+    
+    #normalizing the eigenvector
+    p = -vec[:, 0]/np.linalg.norm(vec[:, 0])
+
+    #the abs is returned because the vector is complex with imaginary part 0
+    #his is not a problem because p is a probability vector so all entries must be positive
+    return np.abs(p)
+
+'''
+A = sparse matrix
+iter_num = number of iterations
+p_linear = real HITS rank
+return = HITS rank found thanks to power iteration
+'''
+def hits_power_iteration(A, iter_num = 35, p_linear=None):
+    
+    assert type(A) == sp.sparse.csr.csr_matrix
+    assert (type(iter_num) == int) and (iter_num > 0)
+    assert (p_linear is None) or (type(p_linear) == np.ndarray)
+
+    N = A.shape[0]
+    
+    #giving the same rank to every node
+    pt = np.ones((N, 1))/N**0.5
+
+    #finding the M matrix
+    M = A*A.T
+    
+    errors = []
+
+    for t in range(iter_num):
+
+        #updating pt
+        pt = M*pt
+        #normalizing pt
+        pt /= np.linalg.norm(pt)
+
+        #if the true pt is provided the error is calculated
+        if p_linear is not None:
+            errors.append(np.linalg.norm(p_linear - pt.T)/ N ** 0.5)
+
+    if p_linear is not None:
+        return pt, errors
+    
+    return pt
