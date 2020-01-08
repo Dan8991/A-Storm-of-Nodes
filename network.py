@@ -874,3 +874,41 @@ def get_conductance(A):
 
     return conductance.T
 
+'''
+A = sparse matrix
+epsilon = precision
+starting_node = starting node
+c = damping factor
+return = approximate page nibble
+'''
+def page_nibble_with_finite_precision(A, epsilon, starting_node = 0, c = 0.85):
+
+    assert type(A) == sp.sparse.csr_matrix
+    assert type(epsilon) == float
+
+    N = A.shape[0]
+
+    assert (type(starting_node) == int) and (starting_node < N)
+
+    #getting basic parameters to perform the page nibble
+    d = get_degrees(A)
+    M = A * sp.sparse.diags(1/d[:, 0])
+    D = np.sum(d)
+    q = np.zeros((N,1))
+    q[starting_node] = 1
+    u = np.zeros((N, 1))
+    v = q.copy()
+    th = epsilon * d / D
+
+    #while some values of v are bigger than the threshold 
+    while np.sum(v > th) > 0:
+
+        #compute the delta where the vector is bigger than threshold
+        delta = v.copy()
+        delta[v < th] = 0
+
+        #updating u,v
+        u += (1-c)*delta
+        v = v - delta + c*M*delta
+        
+    return u
