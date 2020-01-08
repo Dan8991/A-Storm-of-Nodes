@@ -883,7 +883,7 @@ starting_node = starting node
 c = damping factor
 return = approximate page nibble
 '''
-def page_nibble_with_finite_precision(A, epsilon, starting_node = 0, c = 0.85):
+def page_nibble_with_finite_precision(A, epsilon=1e-3, starting_node = 0, c = 0.85):
 
     assert type(A) == sp.sparse.csr_matrix
     assert type(epsilon) == float
@@ -914,3 +914,49 @@ def page_nibble_with_finite_precision(A, epsilon, starting_node = 0, c = 0.85):
         v = v - delta + c*M*delta
         
     return u
+
+def divide_in_communities(A, function , conductance_lim = 0.3):
+
+    assert type(A) == sp.sparse.csr_matrix
+    assert (type(conductance_lim) == float) and (conductance_lim < 1) 
+
+    indexes = np.arange(A.shape[0])
+
+    return recursive_communities(A, indexes, conductance_lim, function)
+
+def recursive_communities(A, indexes, conductance_lim, function):
+    
+    N = A.shape[0]
+    v1 = function(A)
+
+    A1, ids = reorder_nodes(A, v1)
+
+    conductance = get_conductance(A1)
+    
+    if np.min(conductance) > conductance_lim:
+        return [indexes]
+
+    separator = np.argmin(conductance) + 1
+
+    if (separator < 4) or (separator > N-4):
+        return [indexes]    
+    
+    C1_ids = ids[:separator]
+    C2_ids = ids[separator:]
+
+    A1 = A[C1_ids,:][:, C1_ids]
+    A2 = A[C2_ids,:][:, C2_ids]
+
+    C1 = indexes[C1_ids]
+    C2 = indexes[C2_ids]
+
+    communities = recursive_communities(A1, C1, conductance_lim, function)
+    communities.extend(recursive_communities(A2, C2, conductance_lim, function))
+
+    return communities
+
+def spectral_clustering_reordering(A):
+    
+    v1, _ = get_fiedler_vector(A)
+    return v1
+
