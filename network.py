@@ -692,3 +692,19 @@ def page_rank_power_iteration(A, iter_num = 35, c = 0.85, q = None, p_linear=Non
         return pt, errors
     
     return pt
+
+'''
+A = sparse matrix
+return = the 2 biggest eigenvalues of the matrix A
+'''
+def get_two_highest_eigenvalues(A):
+    
+    assert type(A) == sp.sparse.csr_matrix
+
+    #needed for the sparse function to work
+    A = A.astype(float)
+
+    #getting the highes eigenvalues
+    val, vec = sp.sparse.linalg.eigs(A, 2)
+
+    return val
