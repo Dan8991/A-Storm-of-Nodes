@@ -27,9 +27,9 @@ return = indegree or outdegree of A
 def get_degrees(A, direction = "out"):
 
     if direction == "out":
-        axis = 1
-    elif direction == "in":
         axis = 0
+    elif direction == "in":
+        axis = 1
     else:
         raise Exception("Unsupported degree direction")
 
@@ -341,7 +341,7 @@ def get_assortativity_value(A, neigh_dir = "out", knn_dir = "out"):
     neigh_deg = get_degrees(A, neigh_dir)
     knn_deg = get_degrees(A, knn_dir)
 
-    if neigh_dir == "in":
+    if neigh_dir == "out":
         A = A.T
 
     #done in order to evade division by zero, non meaningful results are removed later
