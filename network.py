@@ -768,3 +768,80 @@ def hits_power_iteration(A, iter_num = 35, p_linear=None):
         return pt, errors
     
     return pt
+
+'''
+A = sparse matrix
+return = normalized laplacian of A
+'''
+def get_normalized_laplacian(A):
+    
+    assert type(A) == sp.sparse.csr_matrix
+
+    N = A.shape[0]
+
+    D = get_D_matrix(A)
+    L = sp.sparse.identity(N) - D*A*D
+
+    return L
+
+'''
+A = sparse matrix
+return = D sparse matrix give A
+'''
+def get_D_matrix(A):
+
+    assert type(A) == sp.sparse.csr_matrix
+    
+    N = A.shape[0]
+
+    d = get_degrees(A)
+    inv_d = np.reshape(1/np.sqrt(d), N)
+    D = sp.sparse.diags(inv_d.T, offsets=0)
+
+    return D
+
+'''
+A = sparse matrix
+reorder = vector according to whom A should be reordered
+inverse = if False reorder is sorted from smaller to bigger if true the opposite is done
+reuturn = A reordered according to reorder from it's smaller value to the biggest
+'''
+def reorder_nodes(A, reorder, inverse=False):
+
+    assert type(A) == sp.sparse.csr_matrix
+    
+    N = A.shape[0]
+    
+    assert type(reorder) == np.ndarray
+    assert type(inverse) == bool
+
+    reorder = reorder.reshape(N)
+    ids = np.argsort(reorder)
+    
+    if inverse:
+        ids = ids[::-1]
+
+    A1 = A[ids, :][:, ids]
+
+    return A1, ids
+
+'''
+A = sparse matrix
+return = fiedler vector and it's successor
+'''
+def get_fiedler_vector(A):
+
+    assert type(A) == sp.sparse.csr_matrix
+
+    N = A.shape[0]
+    
+    D = get_D_matrix(A)
+    L = sp.sparse.identity(N) - D*A*D
+
+    #getting the eigenvectors of L
+    eig_val, eig_vec = sp.sparse.linalg.eigsh(L, k = 3, which="SM")
+    
+    #normalizing the eigenvectors
+    eig_vec = D * eig_vec
+
+    return eig_vec[:, 1], eig_vec[:, 2]
