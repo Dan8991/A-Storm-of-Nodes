@@ -845,3 +845,32 @@ def get_fiedler_vector(A):
     eig_vec = D * eig_vec
 
     return eig_vec[:, 1], eig_vec[:, 2]
+
+    '''
+A = sparse matrix
+return = conductance array of matrix A
+'''
+def get_conductance(A):
+
+    assert type(A) == sp.sparse.csr_matrix
+
+    N = A.shape[0]
+
+    #values needed1 to calculate cut and assoc
+    a = np.asarray(sp.sparse.triu(A).sum(axis=0))
+    b = np.asarray(sp.sparse.tril(A).sum(axis=0))
+    d = get_degrees(A)
+
+    cut = np.cumsum(b - a, axis = 1)
+
+    assoc = np.cumsum(d, axis = 0)
+
+    D = np.sum(d)
+
+    denominator =  np.min(np.concatenate([assoc, D - assoc], axis = 1), axis = 1)
+
+    #removing the last value of denominator because it is going to be 0
+    conductance = cut.T[:-1].reshape(N-1) / denominator[:-1]
+
+    return conductance.T
+
