@@ -2,6 +2,8 @@ import numpy as np
 import scipy as sp
 import pandas as pd
 from random import uniform
+from scipy.sparse.linalg import eigs, eigsh
+
 '''
 arr = np array from which values are removed
 relative_to = if this value is not None then the values from arr are removed where relative_to == 0
@@ -705,7 +707,7 @@ def get_two_highest_eigenvalues(A):
     A = A.astype(float)
 
     #getting the highes eigenvalues
-    val, vec = sp.sparse.linalg.eigs(A, 2)
+    val, vec = eigs(A, 2)
 
     return val
 
@@ -722,7 +724,7 @@ def hits_linear_system(A):
 
     #getting the highest eigenvalues and the relative eigenvectors
     M = M.astype(float)
-    val, vec = sp.sparse.linalg.eigs(M, k = 2)
+    val, vec = eigs(M, k = 2)
     
     #normalizing the eigenvector
     p = -vec[:, 0]/np.linalg.norm(vec[:, 0])
@@ -839,7 +841,7 @@ def get_fiedler_vector(A):
     L = sp.sparse.identity(N) - D*A*D
 
     #getting the eigenvectors of L
-    eig_val, eig_vec = sp.sparse.linalg.eigsh(L, k = 3, which="SM")
+    eig_val, eig_vec = eigsh(L, k = 3, which="SM")
     
     #normalizing the eigenvectors
     eig_vec = D * eig_vec
