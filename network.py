@@ -594,7 +594,7 @@ def random_rewiring(A):
 
     return A_rand
 
-    '''
+'''
 A = sparse matrix representing the network
 c = damping factor
 q = teleport vector
