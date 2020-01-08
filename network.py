@@ -593,3 +593,55 @@ def random_rewiring(A):
     A_rand = sp.sparse.csr_matrix((np.ones(len(x)), (x, y)), shape=(N,N), dtype = np.int32)
 
     return A_rand
+
+    '''
+A = sparse matrix representing the network
+c = damping factor
+q = teleport vector
+return = page rank ranking vector
+'''
+def page_rank_linear_system(A, c = 0.85, q = None):
+    
+    assert type(A) == sp.sparse.csr.csr_matrix
+    assert (type(c) == float) and (c > 0) and (c < 1)
+    assert (q is None) or type(q) == np.ndarray
+
+    N = A.shape[0]
+ 
+    #if no q is passed then a q with all probabilities equal to 1/N is created
+    if q is None:
+        q = np.ones((N, 1))/N
+
+    d = 1/get_degrees(A)
+    M = A * sp.sparse.diags(d[:, 0])
+
+    #finding a and b such that ap = b
+    a = (np.eye(N) - c * M)/(1-c)
+    
+    #this is faster than the sparse solver because p is not a sparse vector 
+    #since a has at leas one positive entry for each row/column and b doesn't have any 0
+    p = np.linalg.solve(a, q)
+    p = p/np.sum(p)
+
+    return p
+
+'''
+A = sparse matrix
+return = sparse matrix where there are no single nodes and all dead ends are removed
+'''
+def remove_dead_ends(A):
+    
+    assert type(A) == sp.sparse.csr_matrix
+
+    #exit condition
+    ex = False
+
+    while not ex:
+        #if the outdegree of the node is 0 remove it
+        pos = (get_degrees(A) != 0).reshape(-1)
+        A = A[pos, :][:, pos]
+
+        #checking if there are any bad nodes left
+        ex = np.sum(get_degrees(A) == 0) == 0
+    
+    return A
