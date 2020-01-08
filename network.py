@@ -645,3 +645,50 @@ def remove_dead_ends(A):
         ex = np.sum(get_degrees(A) == 0) == 0
     
     return A
+
+'''
+A = sparse matrix whose page rank is calculated
+iter_num = number of iterations
+c = damping factor
+q = teleport vector
+p_linear = real page ranking obtained with linear system solution
+'''
+def page_rank_power_iteration(A, iter_num = 35, c = 0.85, q = None, p_linear=None):
+    
+    #type checks
+    assert type(A) == sp.sparse.csr.csr_matrix
+    assert (type(c) == float) and (c > 0) and (c < 1)
+    assert (q is None) or (type(q) == np.ndarray)
+    assert (type(iter_num) == int) and (iter_num > 0)
+    assert (p_linear is None) or (type(p_linear) == np.ndarray)
+
+    N = A.shape[0]
+ 
+    #if no q is passed then a q with all probabilities equal to 1/N is created
+    if q is None:
+        q = np.ones((N, 1))/N
+    
+    #ranking starting point, all nodes have the same rank
+    pt = np.ones((N, 1))/N
+
+    #calculating the M matrix
+    d = 1/get_degrees(A)
+    M = A * sp.sparse.diags(d[:, 0])
+    
+    errors = []
+
+    for t in range(iter_num):
+
+        #updating and normalizing the ranking
+        pt = c * M * pt + (1 - c) * q
+        pt = pt/np.sum(pt)
+        
+        #if the real rank was passed the error is computed
+        if p_linear is not None:
+            errors.append(np.linalg.norm(p_linear - pt)/ N ** 0.5)
+
+    #returning the error if it was calculated
+    if p_linear is not None:
+        return pt, errors
+    
+    return pt
