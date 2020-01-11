@@ -927,11 +927,8 @@ def divide_in_communities(A, function , conductance_lim = 0.3):
 def recursive_communities(A, indexes, conductance_lim, function, path="", border=""):
     
     N = A.shape[0]
-    v1 = function(A)
 
-    A1, ids = reorder_nodes(A, v1)
-
-    conductance = get_conductance(A1)
+    conductance, ids = function(A)
     
     if np.min(conductance) > conductance_lim:
         return [{"path":path, "indexes":indexes, "border":border}], []
@@ -950,13 +947,13 @@ def recursive_communities(A, indexes, conductance_lim, function, path="", border
     C1 = indexes[C1_ids]
     C2 = indexes[C2_ids]
 
-    div1, separator1 = recursive_communities(A1, C1, conductance_lim, function, path + "0", indexes[ids[separator]])
-    div2, separator2 = recursive_communities(A2, C2, conductance_lim, function, path + "1", indexes[ids[separator]])
+    div1, separator1 = recursive_communities(A1, C1, conductance_lim, function, path + "0", indexes[ids[separator-1]])
+    div2, separator2 = recursive_communities(A2, C2, conductance_lim, function, path + "1", indexes[ids[separator-1]])
 
     separator_set = []
     if len(separator1) > 0:
         separator_set.append(separator1)
-    separator_set.append(indexes[ids[separator]])
+    separator_set.append(indexes[ids[separator-1]])
     if len(separator2) > 0:
         separator_set.append(separator2)
 
@@ -981,5 +978,35 @@ def merge_dendrogram(dendrogram):
 def spectral_clustering_reordering(A):
     
     v1, _ = get_fiedler_vector(A)
-    return v1
 
+    A1, ids = reorder_nodes(A, v1)
+
+    conductance = get_conductance(A1)
+
+    return conductance, ids
+
+def page_nibble_split(A):
+
+    np.random.RandomState(1)
+    N = A.shape[0]
+    choices = np.random.choice(N, size = int(np.ceil(np.sqrt(N))), replace=False)
+    best_conductance = 0
+    best_ids = 0
+    min_conductance = 2
+
+    for choice in choices:
+
+        q = page_nibble_with_finite_precision(A, starting_node=int(choice))
+
+        A1, ids = reorder_nodes(A, q)
+
+        conductance = get_conductance(A1)
+
+        cmin = np.min(conductance)
+        if cmin < min_conductance:
+            min_conductance = cmin
+            best_conductance = conductance
+            best_ids = ids
+
+
+    return best_conductance, best_ids
