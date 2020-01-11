@@ -959,22 +959,6 @@ def recursive_communities(A, indexes, conductance_lim, function, path="", border
 
     return div1 + div2, separator_set
 
-def merge_dendrogram(dendrogram):
-    print(dendrogram)
-    print("next")
-
-    if len(dendrogram) != 2:
-        print("returning")
-        return dendrogram
-    #print(len(dendrogram))
-    den1 = list(merge_dendrogram(dendrogram[0]))
-    den2 = list(merge_dendrogram(dendrogram[1]))
-    #print(len(den1))
-    #print(len(den2))
-    #print()
-
-    return den1.extend(den2)
-
 def spectral_clustering_reordering(A):
     
     v1, _ = get_fiedler_vector(A)
