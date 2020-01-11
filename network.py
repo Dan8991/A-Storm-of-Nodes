@@ -848,7 +848,7 @@ def get_fiedler_vector(A):
 
     return eig_vec[:, 1], eig_vec[:, 2]
 
-    '''
+'''
 A = sparse matrix
 return = conductance array of matrix A
 '''
@@ -924,7 +924,7 @@ def divide_in_communities(A, function , conductance_lim = 0.3):
 
     return recursive_communities(A, indexes, conductance_lim, function)
 
-def recursive_communities(A, indexes, conductance_lim, function):
+def recursive_communities(A, indexes, conductance_lim, function, path="", border=""):
     
     N = A.shape[0]
     v1 = function(A)
@@ -934,12 +934,12 @@ def recursive_communities(A, indexes, conductance_lim, function):
     conductance = get_conductance(A1)
     
     if np.min(conductance) > conductance_lim:
-        return [indexes]
+        return [{"path":path, "indexes":indexes, "border":border}], []
 
     separator = np.argmin(conductance) + 1
 
     if (separator < 4) or (separator > N-4):
-        return [indexes]    
+        return [{"path":path, "indexes":indexes, "border":border}], []   
     
     C1_ids = ids[:separator]
     C2_ids = ids[separator:]
@@ -950,10 +950,33 @@ def recursive_communities(A, indexes, conductance_lim, function):
     C1 = indexes[C1_ids]
     C2 = indexes[C2_ids]
 
-    communities = recursive_communities(A1, C1, conductance_lim, function)
-    communities.extend(recursive_communities(A2, C2, conductance_lim, function))
+    div1, separator1 = recursive_communities(A1, C1, conductance_lim, function, path + "0", indexes[ids[separator]])
+    div2, separator2 = recursive_communities(A2, C2, conductance_lim, function, path + "1", indexes[ids[separator]])
 
-    return communities
+    separator_set = []
+    if len(separator1) > 0:
+        separator_set.append(separator1)
+    separator_set.append(indexes[ids[separator]])
+    if len(separator2) > 0:
+        separator_set.append(separator2)
+
+    return div1 + div2, separator_set
+
+def merge_dendrogram(dendrogram):
+    print(dendrogram)
+    print("next")
+
+    if len(dendrogram) != 2:
+        print("returning")
+        return dendrogram
+    #print(len(dendrogram))
+    den1 = list(merge_dendrogram(dendrogram[0]))
+    den2 = list(merge_dendrogram(dendrogram[1]))
+    #print(len(den1))
+    #print(len(den2))
+    #print()
+
+    return den1.extend(den2)
 
 def spectral_clustering_reordering(A):
     
