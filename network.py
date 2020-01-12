@@ -1051,9 +1051,17 @@ def resource_allocation_link_prediction(A):
                 S[j,i] = Sij
     return S
 
+def katz_link_prediction(A, l, beta):
     
-def ROC_AUC(A, f):
+    N = A.shape[0]
+    S_katz = sp.sparse.csr_matrix((N,N))
+    for i in range(2, l+1):
+        S_katz += A**i*beta**i
+    return S_katz.toarray()
 
+    
+def ROC_AUC(A, f, args=None):
+    np.random.RandomState(1)
     assert type(A) == sp.sparse.csr_matrix
 
     N = A.shape[0]
@@ -1061,7 +1069,7 @@ def ROC_AUC(A, f):
     x,y = np.where(sp.sparse.triu(A).toarray() == 1)
     possible_choiches = np.arange(len(x))
 
-    choiches = np.random.choice(possible_choiches, size=(x.shape[0] // 5), replace=False)
+    choiches = np.random.choice(possible_choiches, size=(x.shape[0] // 2), replace=False)
     p = np.concatenate([x[choiches].reshape(-1, 1), y[choiches].reshape(-1, 1)], axis = 1).T
     values = np.ones((p.shape[1]))
 
@@ -1070,7 +1078,10 @@ def ROC_AUC(A, f):
 
     A_t = A - A_p
 
-    S_t = f(A_t)
+    if args is not None:
+        S_t = f(A_t, *args)
+    else:
+        S_t = f(A_t)
 
     A_i = np.triu(A.toarray() != 1)
     A_p = np.triu(A_p.toarray() == 1)
