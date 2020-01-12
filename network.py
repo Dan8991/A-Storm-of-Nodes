@@ -994,3 +994,59 @@ def page_nibble_split(A):
 
 
     return best_conductance, best_ids
+
+def common_neigh_link_prediction(A):
+    
+    assert type(A) == sp.sparse.csr_matrix
+
+    return A*A
+
+def find_common_neigh(A, i, j):
+    
+    assert type(A) == np.ndarray
+    
+    N = A.shape[0]
+
+    assert (type(i) == int) and (i >= 0) and (i<N)
+    assert (type(j) == int) and (j >= 0) and (j<N)
+
+    return ((A[i] == A[j])&(A[i] == 1)).reshape(-1)
+
+def adamic_adar_link_prediction(A):
+
+    assert type(A) == sp.sparse.csr_matrix
+
+    N = A.shape[0]
+
+    d = get_degrees(A)
+    d[d < 1.5] = 1.6
+    S = np.zeros((N,N))
+    A = A.toarray()
+
+    for i in range(1,N):
+        for j in range(i):
+            common = find_common_neigh(A, i, j)
+            if np.sum(common) > 0:
+                Sij = np.sum(1/np.log(d[common]+1e-4))
+                S[i,j] = Sij
+                S[j,i] = Sij
+    
+    return S
+
+def resource_allocation_link_prediction(A):
+    
+    assert type(A) == sp.sparse.csr_matrix
+    N = A.shape[0]
+
+    d = get_degrees(A)
+    S = np.zeros((N,N))
+    A = A.toarray()
+
+    for i in range(1, N):
+        for j in range(i):
+            common = find_common_neigh(A, i, j)
+            if np.sum(common) > 0:
+                Sij = np.sum(1/d[common])
+                S[i,j] = Sij
+                S[j,i] = Sij
+    return S
