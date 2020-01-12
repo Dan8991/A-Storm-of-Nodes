@@ -1050,3 +1050,36 @@ def resource_allocation_link_prediction(A):
                 S[i,j] = Sij
                 S[j,i] = Sij
     return S
+
+    
+def ROC_AUC(A, f):
+
+    assert type(A) == sp.sparse.csr_matrix
+
+    N = A.shape[0]
+
+    x,y = np.where(sp.sparse.triu(A).toarray() == 1)
+    possible_choiches = np.arange(len(x))
+
+    choiches = np.random.choice(possible_choiches, size=(x.shape[0] // 5), replace=False)
+    p = np.concatenate([x[choiches].reshape(-1, 1), y[choiches].reshape(-1, 1)], axis = 1).T
+    values = np.ones((p.shape[1]))
+
+    A_p = sp.sparse.csr_matrix((values, p), shape = (N, N))
+    A_p = A_p + A_p.T
+
+    A_t = A - A_p
+
+    S_t = f(A_t)
+
+    A_i = np.triu(A.toarray() != 1)
+    A_p = np.triu(A_p.toarray() == 1)
+    p = S_t[A_p].reshape(-1,1)
+    i = S_t[A_i].reshape(-1,1)
+
+    numerator = np.sum(i>p.T)
+    
+    return numerator/i.shape[0]/p.shape[0]
+
+
+
