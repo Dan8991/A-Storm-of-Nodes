@@ -674,7 +674,7 @@ def page_rank_power_iteration(A, iter_num = 35, c = 0.85, q = None, p_linear=Non
     pt = np.ones((N, 1))/N
 
     #calculating the M matrix
-    d = 1/get_degrees(A)
+    d = 1/(get_degrees(A) + 1e-10) 
     M = A * sp.sparse.diags(d[:, 0])
     
     errors = []
@@ -1069,7 +1069,7 @@ def ROC_AUC(A, f, args=None):
     x,y = np.where(sp.sparse.triu(A).toarray() == 1)
     possible_choiches = np.arange(len(x))
 
-    choiches = np.random.choice(possible_choiches, size=(x.shape[0] // 50), replace=False)
+    choiches = np.random.choice(possible_choiches, size=(x.shape[0] // 10), replace=False)
     p = np.concatenate([x[choiches].reshape(-1, 1), y[choiches].reshape(-1, 1)], axis = 1).T
     values = np.ones((p.shape[1]))
 
@@ -1105,3 +1105,14 @@ def random_walk_with_restart_link_prediction(A):
 
     return ranking + ranking.T
 
+def local_random_walk_link_prediction(A, t=5):
+
+    #getting the M matrix
+    d = get_degrees(A)
+    M = A * sp.sparse.diags((1/(d + 1e-10))[:, 0])
+    Mt = M**t
+
+    Mt = Mt + d
+    S = Mt + Mt.T
+
+    return S
