@@ -1069,7 +1069,7 @@ def ROC_AUC(A, f, args=None):
     x,y = np.where(sp.sparse.triu(A).toarray() == 1)
     possible_choiches = np.arange(len(x))
 
-    choiches = np.random.choice(possible_choiches, size=(x.shape[0] // 2), replace=False)
+    choiches = np.random.choice(possible_choiches, size=(x.shape[0] // 50), replace=False)
     p = np.concatenate([x[choiches].reshape(-1, 1), y[choiches].reshape(-1, 1)], axis = 1).T
     values = np.ones((p.shape[1]))
 
@@ -1088,9 +1088,20 @@ def ROC_AUC(A, f, args=None):
     p = S_t[A_p].reshape(-1,1)
     i = S_t[A_i].reshape(-1,1)
 
-    numerator = np.sum(i>p.T)
+    numerator = np.sum(i < p.T)
     
     return numerator/i.shape[0]/p.shape[0]
 
+def random_walk_with_restart_link_prediction(A):
 
+    N = A.shape[0]
+    ranking = np.zeros((N, N))
+    
+    for i in range(N):
+        q = np.zeros((N,1))
+        q[i] = 1
+        pt = page_rank_power_iteration(A, q=q)
+        ranking[i, :] = pt.reshape(1,-1)
+
+    return ranking + ranking.T
 
