@@ -999,7 +999,10 @@ def common_neigh_link_prediction(A):
     
     assert type(A) == sp.sparse.csr_matrix
 
-    return (A*A).toarray()
+    S = (A*A).toarray()
+
+    np.fill_diagonal(S, 0)
+    return S 
 
 def find_common_neigh(A, i, j):
     
@@ -1030,7 +1033,8 @@ def adamic_adar_link_prediction(A):
                 Sij = np.sum(1/np.log(d[common]+1e-4))
                 S[i,j] = Sij
                 S[j,i] = Sij
-    
+
+    np.fill_diagonal(S, 0)
     return S
 
 def resource_allocation_link_prediction(A):
@@ -1049,6 +1053,8 @@ def resource_allocation_link_prediction(A):
                 Sij = np.sum(1/d[common])
                 S[i,j] = Sij
                 S[j,i] = Sij
+
+    np.fill_diagonal(S, 0)      
     return S
 
 def katz_link_prediction(A, l, beta):
@@ -1057,9 +1063,11 @@ def katz_link_prediction(A, l, beta):
     S_katz = sp.sparse.csr_matrix((N,N))
     for i in range(2, l+1):
         S_katz += A**i*beta**i
-    return S_katz.toarray()
 
-    
+    S = S_katz.toarray()
+    np.fill_diagonal(S, 0)
+    return S
+
 def ROC_AUC(A, f, args=None):
     np.random.RandomState(1)
     assert type(A) == sp.sparse.csr_matrix
@@ -1103,7 +1111,9 @@ def random_walk_with_restart_link_prediction(A):
         pt = page_rank_power_iteration(A, q=q)
         ranking[i, :] = pt.reshape(1,-1)
 
-    return ranking + ranking.T
+    S = ranking + ranking.T
+    np.fill_diagonal(S, 0)
+    return S 
 
 def local_random_walk_link_prediction(A, t=5):
 
@@ -1114,8 +1124,8 @@ def local_random_walk_link_prediction(A, t=5):
 
     Mt = Mt + d
     S = Mt + Mt.T
-
-    return S
+    np.fill_diagonal(S, 0)
+    return S 
 
 def superposed_random_walk_link_prediction(A, t=5):
 
@@ -1127,8 +1137,8 @@ def superposed_random_walk_link_prediction(A, t=5):
 
     for u in range(1, t + 1):
         S += local_random_walk_link_prediction(A, u)
-
-    return S
+    np.fill_diagonal(S, 0)
+    return S 
 
 def precision(A, f, args = None):
     np.random.RandomState(1)
