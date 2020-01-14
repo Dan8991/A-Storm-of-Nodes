@@ -999,7 +999,7 @@ def common_neigh_link_prediction(A):
     
     assert type(A) == sp.sparse.csr_matrix
 
-    return A*A
+    return (A*A).toarray()
 
 def find_common_neigh(A, i, j):
     
@@ -1156,13 +1156,7 @@ def precision(A, f, args = None):
     else:
         S_t = f(A_t)
 
-    maximas = []
-
-    for i in range(L):
-        amax = np.unravel_index(np.argmax(S_t), S_t.shape)
-        S_t[amax[0], amax[1]] = 0
-        S_t[amax[1], amax[0]] = 0
-        maximas.append(amax)
+    maximas = get_new_links(S_t, L)
     
     counts = 0
     for amax in maximas:
@@ -1170,3 +1164,18 @@ def precision(A, f, args = None):
             counts += 1
 
     return counts/L
+
+
+def get_new_links(S, n):
+
+    maximas = []
+
+    for _ in range(n):
+        amax = np.unravel_index(np.argmax(S), S.shape)
+        S[amax[0], amax[1]] = 0
+        S[amax[1], amax[0]] = 0
+        maximas.append(amax)
+        if amax[0] == amax[1]:
+            print("uguali dc")
+
+    return maximas
