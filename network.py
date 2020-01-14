@@ -1116,3 +1116,57 @@ def local_random_walk_link_prediction(A, t=5):
     S = Mt + Mt.T
 
     return S
+
+def superposed_random_walk_link_prediction(A, t=5):
+
+    N = A.shape[0]
+
+    #getting the M matrix
+
+    S = np.zeros((N, N))
+
+    for u in range(1, t + 1):
+        S += local_random_walk_link_prediction(A, u)
+
+    return S
+
+def precision(A, f, args = None):
+    np.random.RandomState(1)
+    
+    assert type(A) == sp.sparse.csr_matrix
+
+    N = A.shape[0]
+
+    x,y = np.where(sp.sparse.triu(A).toarray() == 1)
+    possible_choiches = np.arange(len(x))
+
+    L = x.shape[0] // 10
+
+    choiches = np.random.choice(possible_choiches, size=(L), replace=False)
+    p = np.concatenate([x[choiches].reshape(-1, 1), y[choiches].reshape(-1, 1)], axis = 1).T
+    values = np.ones((p.shape[1]))
+
+    A_p = sp.sparse.csr_matrix((values, p), shape = (N, N))
+    A_p = A_p + A_p.T
+
+    A_t = A - A_p
+
+    if args is not None:
+        S_t = f(A_t, *args)
+    else:
+        S_t = f(A_t)
+
+    maximas = []
+
+    for i in range(L):
+        amax = np.unravel_index(np.argmax(S_t), S_t.shape)
+        S_t[amax[0], amax[1]] = 0
+        S_t[amax[1], amax[0]] = 0
+        maximas.append(amax)
+    
+    counts = 0
+    for amax in maximas:
+        if A_p[amax[0], amax[1]] == 1:
+            counts += 1
+
+    return counts/L
