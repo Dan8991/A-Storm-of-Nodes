@@ -971,7 +971,6 @@ def spectral_clustering_reordering(A):
 
 def page_nibble_split(A):
 
-    np.random.RandomState(1)
     N = A.shape[0]
     choices = np.random.choice(N, size = int(np.ceil(np.sqrt(N))), replace=False)
     best_conductance = 0
@@ -1069,7 +1068,6 @@ def katz_link_prediction(A, l, beta):
     return S
 
 def ROC_AUC(A, f, args=None):
-    np.random.RandomState(1)
     assert type(A) == sp.sparse.csr_matrix
 
     N = A.shape[0]
@@ -1141,7 +1139,6 @@ def superposed_random_walk_link_prediction(A, t=5):
     return S 
 
 def precision(A, f, args = None):
-    np.random.RandomState(1)
     
     assert type(A) == sp.sparse.csr_matrix
 
@@ -1185,7 +1182,5 @@ def get_new_links(S, n):
         S[amax[0], amax[1]] = 0
         S[amax[1], amax[0]] = 0
         maximas.append(amax)
-        if amax[0] == amax[1]:
-            print("uguali dc")
 
     return maximas
