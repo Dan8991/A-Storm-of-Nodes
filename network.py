@@ -725,7 +725,7 @@ def hits_linear_system(A):
 
     #getting the highest eigenvalues and the relative eigenvectors
     M = M.astype(float)
-    val, vec = eigs(M, k = 2)
+    _, vec = eigs(M, k = 2)
     
     #normalizing the eigenvector
     p = -vec[:, 0]/np.linalg.norm(vec[:, 0])
@@ -925,6 +925,23 @@ def divide_in_communities(A, function , conductance_lim = 0.3):
 
     return recursive_communities(A, indexes, conductance_lim, function)
 
+def get_best_separator(A, conductance, ids):
+
+    separator = np.argmin(conductance)
+    C1_ids = ids[:separator]
+    C2_ids = ids[separator:]
+
+    A1 = A[C1_ids,:][:, C1_ids]
+    A2 = A[C2_ids,:][:, C2_ids]
+    
+    deg1 = get_degrees(A1)
+    deg2 = get_degrees(A2)
+
+    if np.sum(deg1 == 0) + np.sum(deg2 == 0) == 0:
+        return separator
+    else:
+        return separator + 1
+
 def recursive_communities(A, indexes, conductance_lim, function, path="", border=""):
     
     N = A.shape[0]
@@ -934,7 +951,7 @@ def recursive_communities(A, indexes, conductance_lim, function, path="", border
     if np.min(conductance) > conductance_lim:
         return [{"path":path, "indexes":indexes, "border":border}], []
 
-    separator = np.argmin(conductance) + 1
+    separator = get_best_separator(A, conductance, ids)
 
     if (separator < 4) or (separator > N-4):
         return [{"path":path, "indexes":indexes, "border":border}], []   
@@ -948,8 +965,16 @@ def recursive_communities(A, indexes, conductance_lim, function, path="", border
     C1 = indexes[C1_ids]
     C2 = indexes[C2_ids]
 
-    div1, separator1 = recursive_communities(A1, C1, conductance_lim, function, path + "0", indexes[ids[separator-1]])
-    div2, separator2 = recursive_communities(A2, C2, conductance_lim, function, path + "1", indexes[ids[separator-1]])
+    modularity = get_modularity(A, np.zeros(N))
+    communities = np.zeros(N)
+    communities[C2_ids] = 1
+    modularity_divided = get_modularity(A, communities)
+
+    if modularity > modularity_divided:
+        return [{"path":path, "indexes":indexes, "border":border}], []
+
+    div1, separator1 = recursive_communities(A1, C1, conductance_lim, function, path + "0", indexes[ids[separator]])
+    div2, separator2 = recursive_communities(A2, C2, conductance_lim, function, path + "1", indexes[ids[separator]])
 
     separator_set = []
     if len(separator1) > 0:
