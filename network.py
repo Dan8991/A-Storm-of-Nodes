@@ -1000,8 +1000,7 @@ def common_neigh_link_prediction(A):
 
     S = (A*A).toarray()
 
-    np.fill_diagonal(S, 0)
-    return S 
+    return clean_link_prediction_matrix(S, A)
 
 def find_common_neigh(A, i, j):
     
@@ -1033,8 +1032,7 @@ def adamic_adar_link_prediction(A):
                 S[i,j] = Sij
                 S[j,i] = Sij
 
-    np.fill_diagonal(S, 0)
-    return S
+    return clean_link_prediction_matrix(S, sp.sparse.csr_matrix(A))
 
 def resource_allocation_link_prediction(A):
     
@@ -1052,9 +1050,8 @@ def resource_allocation_link_prediction(A):
                 Sij = np.sum(1/d[common])
                 S[i,j] = Sij
                 S[j,i] = Sij
-
-    np.fill_diagonal(S, 0)      
-    return S
+   
+    return clean_link_prediction_matrix(S, sp.sparse.csr_matrix(A))
 
 def katz_link_prediction(A, l, beta):
     
@@ -1064,8 +1061,8 @@ def katz_link_prediction(A, l, beta):
         S_katz += A**i*beta**i
 
     S = S_katz.toarray()
-    np.fill_diagonal(S, 0)
-    return S
+
+    return clean_link_prediction_matrix(S, A)
 
 def ROC_AUC(A, f, args=None):
     assert type(A) == sp.sparse.csr_matrix
@@ -1110,8 +1107,8 @@ def random_walk_with_restart_link_prediction(A):
         ranking[i, :] = pt.reshape(1,-1)
 
     S = ranking + ranking.T
-    np.fill_diagonal(S, 0)
-    return S 
+
+    return clean_link_prediction_matrix(S, A)
 
 def local_random_walk_link_prediction(A, t=5):
 
@@ -1122,8 +1119,8 @@ def local_random_walk_link_prediction(A, t=5):
 
     Mt = Mt + d
     S = Mt + Mt.T
-    np.fill_diagonal(S, 0)
-    return S 
+
+    return clean_link_prediction_matrix(S, A)
 
 def superposed_random_walk_link_prediction(A, t=5):
 
@@ -1135,8 +1132,8 @@ def superposed_random_walk_link_prediction(A, t=5):
 
     for u in range(1, t + 1):
         S += local_random_walk_link_prediction(A, u)
-    np.fill_diagonal(S, 0)
-    return S 
+
+    return clean_link_prediction_matrix(S, A)
 
 def precision(A, f, args = None):
     
@@ -1184,3 +1181,10 @@ def get_new_links(S, n):
         maximas.append(amax)
 
     return maximas
+
+def clean_link_prediction_matrix(S, A):
+    
+    np.fill_diagonal(S, 0)
+    S[A.toarray() == 1] = 0
+
+    return S 
