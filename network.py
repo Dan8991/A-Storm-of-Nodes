@@ -928,23 +928,6 @@ def divide_in_communities(A, function , conductance_lim = 0.3):
 
     return recursive_communities(A, indexes, conductance_lim, function)
 
-def get_best_separator(A, conductance, ids):
-
-    separator = np.argmin(conductance)
-    C1_ids = ids[:separator]
-    C2_ids = ids[separator:]
-
-    A1 = A[C1_ids,:][:, C1_ids]
-    A2 = A[C2_ids,:][:, C2_ids]
-    
-    deg1 = get_degrees(A1)
-    deg2 = get_degrees(A2)
-
-    if np.sum(deg1 == 0) + np.sum(deg2 == 0) == 0:
-        return separator
-    else:
-        return separator + 1
-
 def recursive_communities(A, indexes, conductance_lim, function, path="", border=""):
     
     N = A.shape[0]
@@ -954,7 +937,7 @@ def recursive_communities(A, indexes, conductance_lim, function, path="", border
     if np.min(conductance) > conductance_lim:
         return [{"path":path, "indexes":indexes, "border":border}], []
 
-    separator = get_best_separator(A, conductance, ids)
+    separator = np.argmin(conductance) + 1
 
     if (separator < 4) or (separator > N-4):
         return [{"path":path, "indexes":indexes, "border":border}], []   
@@ -989,8 +972,6 @@ def get_communities(A, ids, separator, indexes):
 
     d1 = get_degrees(A1).reshape(-1)
     d2 = get_degrees(A2).reshape(-1)
-
-    print(C1_ids.shape)
 
     C1_ids_full = np.concatenate([C1_ids[d1 != 0].reshape(-1, 1), C2_ids[d2==0].reshape(-1, 1)], axis = 0).reshape(-1)
     C2_ids_full = np.concatenate([C1_ids[d1 == 0].reshape(-1, 1), C2_ids[d2!=0].reshape(-1, 1)], axis = 0).reshape(-1)
