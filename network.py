@@ -1083,8 +1083,9 @@ def adamic_adar_link_prediction(A):
 
     N = A.shape[0]
 
-    d = get_degrees(A)
-    d[d < 1.5] = 1.6
+    d = get_degrees(A).astype(np.float32)
+    d[np.isclose(d, 1)] = 1 + 1e-10
+
     S = np.zeros((N,N))
     A = A.toarray()
 
@@ -1092,7 +1093,7 @@ def adamic_adar_link_prediction(A):
         for j in range(i):
             common = find_common_neigh(A, i, j)
             if np.sum(common) > 0:
-                Sij = np.sum(1/np.log(d[common]+1e-4))
+                Sij = np.sum(1/np.log(d[common]))
                 S[i,j] = Sij
                 S[j,i] = Sij
 
