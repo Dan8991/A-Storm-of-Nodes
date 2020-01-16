@@ -922,7 +922,7 @@ def page_nibble_with_finite_precision(A, epsilon=1e-3, starting_node = 0, c = 0.
 def divide_in_communities(A, function , conductance_lim = 0.3):
 
     assert type(A) == sp.sparse.csr_matrix
-    assert (type(conductance_lim) == float) and (conductance_lim < 1) 
+    assert (type(conductance_lim) == float) and (conductance_lim <= 1) 
 
     indexes = np.arange(A.shape[0])
 
