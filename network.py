@@ -898,7 +898,7 @@ def page_nibble_with_finite_precision(A, epsilon=1e-3, starting_node = 0, c = 0.
 
     #getting basic parameters to perform the page nibble
     d = get_degrees(A)
-    M = A * sp.sparse.diags(1/(d[:, 0] + 1e-10))
+    M = A * sp.sparse.diags(1/(d[:, 0]))
     D = np.sum(d)
     q = np.zeros((N,1))
     q[starting_node] = 1
@@ -959,18 +959,9 @@ def recursive_communities(A, indexes, conductance_lim, function, path="", border
     if (separator < 4) or (separator > N-4):
         return [{"path":path, "indexes":indexes, "border":border}], []   
     
-    C1_ids = ids[:separator]
-    C2_ids = ids[separator:]
-
-    A1 = A[C1_ids,:][:, C1_ids]
-    A2 = A[C2_ids,:][:, C2_ids]
-
-    C1 = indexes[C1_ids]
-    C2 = indexes[C2_ids]
+    C1, C2, A1, A2, communities = get_communities(A, ids, separator, indexes)
 
     modularity = get_modularity(A, np.zeros(N))
-    communities = np.zeros(N)
-    communities[C2_ids] = 1
     modularity_divided = get_modularity(A, communities)
 
     if modularity > modularity_divided:
@@ -987,6 +978,33 @@ def recursive_communities(A, indexes, conductance_lim, function, path="", border
         separator_set.append(separator2)
 
     return div1 + div2, separator_set
+
+def get_communities(A, ids, separator, indexes):
+    
+    C1_ids = ids[:separator]
+    C2_ids = ids[separator:]
+
+    A1 = A[C1_ids,:][:, C1_ids]
+    A2 = A[C2_ids,:][:, C2_ids]
+
+    d1 = get_degrees(A1).reshape(-1)
+    d2 = get_degrees(A2).reshape(-1)
+
+    print(C1_ids.shape)
+
+    C1_ids_full = np.concatenate([C1_ids[d1 != 0].reshape(-1, 1), C2_ids[d2==0].reshape(-1, 1)], axis = 0).reshape(-1)
+    C2_ids_full = np.concatenate([C1_ids[d1 == 0].reshape(-1, 1), C2_ids[d2!=0].reshape(-1, 1)], axis = 0).reshape(-1)
+
+    A1_full = A[C1_ids_full,:][:, C1_ids_full]
+    A2_full = A[C2_ids_full,:][:, C2_ids_full]
+
+    C1 = indexes[C1_ids_full.reshape(-1)]
+    C2 = indexes[C2_ids_full.reshape(-1)]
+
+    communities = np.zeros(A.shape[0])
+    communities[C2_ids_full] = 1
+
+    return C1, C2, A1_full, A2_full, communities
 
 def spectral_clustering_reordering(A):
     
