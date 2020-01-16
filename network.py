@@ -864,16 +864,19 @@ def get_conductance(A):
     b = np.asarray(sp.sparse.tril(A).sum(axis=0))
     d = get_degrees(A)
 
-    cut = np.cumsum(b - a, axis = 1)
+    cut = np.cumsum(b - a, axis = 1, dtype=np.float32)
 
-    assoc = np.cumsum(d, axis = 0)
+    assoc = np.cumsum(d, axis = 0, dtype = np.float32)
 
     D = np.sum(d)
 
     denominator =  np.min(np.concatenate([assoc, D - assoc], axis = 1), axis = 1)
 
-    #removing the last value of denominator because it is going to be 0
-    conductance = cut.T[:-1].reshape(N-1) / denominator[:-1]
+    #changing 0 to very small values
+    cut[cut == 0] = 1e-10
+    denominator[denominator == 0] = 1e-10
+
+    conductance = cut.T.reshape(N) / denominator
 
     return conductance.T
 
@@ -895,7 +898,7 @@ def page_nibble_with_finite_precision(A, epsilon=1e-3, starting_node = 0, c = 0.
 
     #getting basic parameters to perform the page nibble
     d = get_degrees(A)
-    M = A * sp.sparse.diags(1/d[:, 0])
+    M = A * sp.sparse.diags(1/(d[:, 0] + 1e-10))
     D = np.sum(d)
     q = np.zeros((N,1))
     q[starting_node] = 1
