@@ -3,7 +3,6 @@ import scipy as sp
 import pandas as pd
 from random import uniform
 from scipy.sparse.linalg import eigs, eigsh
-from sklearn.cluster import KMeans
 
 '''
 arr = np array from which values are removed
@@ -1022,22 +1021,6 @@ def page_nibble_split(A):
 
     return best_conductance, best_ids
 
-def kmeans_clustering(A):
-
-    N = A.shape[0]
-    modularities = []
-    best_mod = -1
-    best = []
-    for i in range(2, int(N**0.5)):
-        km = KMeans(n_clusters=i).fit_predict(A.toarray())
-        modularity = get_modularity(A, km)
-        modularities.append(modularity)
-        if modularity > best_mod:
-            best_mod = modularity
-            best = km
-
-    return best, modularities
-
 
 def common_neigh_link_prediction(A):
     
@@ -1243,4 +1226,5 @@ def get_modularity(A, division):
     K = d@d.T
     c = division.reshape(-1, 1)
     
-    return np.sum((A[c == c.T]-K[c==c.T])/D)/D
+    return np.sum((A[c == c.T] - K[c == c.T])/D)/D
+
