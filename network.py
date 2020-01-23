@@ -679,7 +679,7 @@ def page_rank_power_iteration(A, iter_num = 35, c = 0.85, q = None, p_linear=Non
     
     errors = []
 
-    for t in range(iter_num):
+    for _ in range(iter_num):
 
         #updating and normalizing the ranking
         pt = c * M * pt + (1 - c) * q
@@ -707,7 +707,7 @@ def get_two_highest_eigenvalues(A):
     A = A.astype(float)
 
     #getting the highes eigenvalues
-    val, vec = eigs(A, 2)
+    val, _ = eigs(A, 2)
 
     return val
 
@@ -755,7 +755,7 @@ def hits_power_iteration(A, iter_num = 35, p_linear=None):
     
     errors = []
 
-    for t in range(iter_num):
+    for _ in range(iter_num):
 
         #updating pt
         pt = M*pt
@@ -841,7 +841,7 @@ def get_fiedler_vector(A):
     L = sp.sparse.identity(N) - D*A*D
 
     #getting the eigenvectors of L
-    eig_val, eig_vec = eigsh(L, k = 3, which="SM")
+    _, eig_vec = eigsh(L, k = 3, which="SM")
     
     #normalizing the eigenvectors
     eig_vec = D * eig_vec
@@ -1226,5 +1226,4 @@ def get_modularity(A, division):
     K = d@d.T
     c = division.reshape(-1, 1)
     
-    return np.sum((A[c == c.T] - K[c == c.T])/D)/D
-
+    return (np.sum(A[c == c.T]) - np.sum(K[c == c.T])/D)/D
