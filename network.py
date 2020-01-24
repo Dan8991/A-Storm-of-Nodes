@@ -918,6 +918,13 @@ def page_nibble_with_finite_precision(A, epsilon=1e-3, starting_node = 0, c = 0.
         
     return u
 
+'''
+divides a network in communities via bisection
+A = sparse matrix of the network
+function = f(A) given A it returns the conductance and the indexes used for reordering
+conductance_lim = maximum conductance, if conductance is greater than this the community is not split
+return = list of communities and list of separators
+'''
 def divide_in_communities(A, function , conductance_lim = 0.3):
 
     assert type(A) == sp.sparse.csr_matrix
@@ -927,31 +934,53 @@ def divide_in_communities(A, function , conductance_lim = 0.3):
 
     return recursive_communities(A, indexes, conductance_lim, function)
 
-def recursive_communities(A, indexes, conductance_lim, function, path="", border=""):
+'''
+A = matrix to be divided in communities
+indexes = indexes of the original nodes that are in the community
+conductance_lim = maximum conductance value to get a bisection
+function = f(A) given A it returns the conductance and the indexes used for reordering
+path = string used to return the dendrogram 0 means that community is in the left subtree, 1 on the right one
+border = separating node
+return = list of communities and list of separators
+'''
+def recursive_communities(A, indexes, conductance_lim, function, path="", border = -1):
     
+    assert type(A) == sp.sparse.csr_matrix
     N = A.shape[0]
 
+    assert type(indexes) == np.ndarray
+    assert (type(conductance_lim) == float) and (conductance_lim <= 1) 
+    assert type(path) == str
+    assert type(border) == int
+
+    #getting conductance and ids from function
     conductance, ids = function(A)
-    
+
+    #if the minimum conductance is bigger than the maximum limit than no division is performed   
     if np.min(conductance) > conductance_lim:
         return [{"path":path, "indexes":indexes, "border":border}], []
 
     separator = np.argmin(conductance) + 1
 
+    #if one of the two communities has less than 3 nodes no split is performed
     if (separator < 4) or (separator > N-4):
         return [{"path":path, "indexes":indexes, "border":border}], []   
     
+    #getting the communities defined by ids and the separators
     C1, C2, A1, A2, communities = get_communities(A, ids, separator, indexes)
 
-    modularity = get_modularity(A, np.zeros(N))
+    #getting the modularity of the network given the split
     modularity_divided = get_modularity(A, communities)
 
-    if modularity > modularity_divided:
+    #if modularity decreases no split is performed
+    if modularity_divided < 0:
         return [{"path":path, "indexes":indexes, "border":border}], []
 
-    div1, separator1 = recursive_communities(A1, C1, conductance_lim, function, path + "0", indexes[ids[separator]])
-    div2, separator2 = recursive_communities(A2, C2, conductance_lim, function, path + "1", indexes[ids[separator]])
+    #recursive part, the two communities are split again
+    div1, separator1 = recursive_communities(A1, C1, conductance_lim, function, path + "0", int(indexes[ids[separator]]))
+    div2, separator2 = recursive_communities(A2, C2, conductance_lim, function, path + "1", int(indexes[ids[separator]]))
 
+    #generating the set of separators
     separator_set = []
     if len(separator1) > 0:
         separator_set.append(separator1)
@@ -959,8 +988,12 @@ def recursive_communities(A, indexes, conductance_lim, function, path="", border
     if len(separator2) > 0:
         separator_set.append(separator2)
 
+    #returning the array of splits and of separators
     return div1 + div2, separator_set
 
+'''
+A = sparse_matrix
+'''
 def get_communities(A, ids, separator, indexes):
     
     C1_ids = ids[:separator]
