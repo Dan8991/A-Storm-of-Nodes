@@ -992,77 +992,143 @@ def recursive_communities(A, indexes, conductance_lim, function, path="", border
     return div1 + div2, separator_set
 
 '''
-A = sparse_matrix
+A = sparse matrix representing the network
+ids = indexes that sort the nodes so that the computed conductance is correct
+separator = index of the minimum conductance
+indexes = real indexes of the nodes of the community
+return:
+C1 = real indexes of nodes in community one
+C2 = real indexes of nodes in community two
+A1_full = matrix of the first community
+A2_full = matrix of the second community
+communities = binary array that tells which of the nodes in indexes belong to each community
 '''
 def get_communities(A, ids, separator, indexes):
     
+    assert type(A) == sp.sparse.csr_matrix 
+    assert type(ids) == np.ndarray
+    assert (type(separator) == int) or (type(separator) == np.int64) or (type(separator) == np.int32)
+    assert type(indexes) == np.ndarray
+
+    #dividing the two communities
     C1_ids = ids[:separator]
     C2_ids = ids[separator:]
 
+    #getting the two matrices representing the communities
     A1 = A[C1_ids,:][:, C1_ids]
     A2 = A[C2_ids,:][:, C2_ids]
 
+    #getting the degrees of the nodes in the communities
     d1 = get_degrees(A1).reshape(-1)
     d2 = get_degrees(A2).reshape(-1)
 
+    '''
+    this basically takes nodes with degree 0 in one communitiy and moves them to the others 
+    this is done because initially no node had 0 degree so if one has it means that it was moved there 
+    by chance but the node should absolutely be part of the community where he has degree != 0
+    '''
     C1_ids_full = np.concatenate([C1_ids[d1 != 0].reshape(-1, 1), C2_ids[d2==0].reshape(-1, 1)], axis = 0).reshape(-1)
     C2_ids_full = np.concatenate([C1_ids[d1 == 0].reshape(-1, 1), C2_ids[d2!=0].reshape(-1, 1)], axis = 0).reshape(-1)
 
+    #getting the matrices based on the new communities
     A1_full = A[C1_ids_full,:][:, C1_ids_full]
     A2_full = A[C2_ids_full,:][:, C2_ids_full]
 
+    #getting the real communities with correct indexes
     C1 = indexes[C1_ids_full.reshape(-1)]
     C2 = indexes[C2_ids_full.reshape(-1)]
 
+    #returns a binary vector that distinguishes between the two communities
     communities = np.zeros(A.shape[0])
     communities[C2_ids_full] = 1
 
     return C1, C2, A1_full, A2_full, communities
 
+'''
+A = sparse matrix of the network
+return: 
+conductance = conductance calculated through spectral clustering reordering, 
+ids = indexes reordering based on fiedler's vector
+'''
 def spectral_clustering_reordering(A):
-    
+
+    assert type(A) == sp.sparse.csr_matrix
+
+    #getting fiedler's vector
     v1, _ = get_fiedler_vector(A)
 
+    #reordering matrix A according to fiedler's vector
     A1, ids = reorder_nodes(A, v1)
 
+    #getting the conductance
     conductance = get_conductance(A1)
 
     return conductance, ids
 
+'''
+A = sparse matrix of the network
+return:
+conductance = conductance calculated through page nibble reordering, 
+ids = indexes reordering based on page nibble
+'''
 def page_nibble_split(A):
 
+    assert type(A) == sp.sparse.csr_matrix
+
     N = A.shape[0]
+    
+    #choosing sqrt(N) random initials node where to start from, only the best split will be considered
     choices = np.random.choice(N, size = int(np.ceil(np.sqrt(N))), replace=False)
+    
+    #setting the variables used to find out the best split
     best_conductance = 0
     best_ids = 0
     min_conductance = 2
 
+    #for each choiche 
     for choice in choices:
 
+        #perform page nibble starting from choice
         q = page_nibble_with_finite_precision(A, starting_node=int(choice))
 
+        #reordering nodes
         A1, ids = reorder_nodes(A, q)
 
+        #calculating the conductance
         conductance = get_conductance(A1)
 
+        #finding the minimum conductance value
         cmin = np.min(conductance)
+
+        #if this minimum is smaller than the best one until now update everything
         if cmin < min_conductance:
             min_conductance = cmin
             best_conductance = conductance
             best_ids = ids
 
-
+    #return the best results
     return best_conductance, best_ids
 
 
+'''
+A = sparse matrix representing the network
+return = similarity matrix with removed values on the diagonal and already existing links
+'''
 def common_neigh_link_prediction(A):
     
     assert type(A) == sp.sparse.csr_matrix
 
+    #getting the similarity matrix based on the number of common neighbours
     S = (A*A).toarray()
 
     return clean_link_prediction_matrix(S, A)
 
+'''
+A = sparse matrix representing the network
+i = first node
+j = second node
+return = boolean vector highliting common neighbours between i and j
+'''
 def find_common_neigh(A, i, j):
     
     assert type(A) == np.ndarray
@@ -1072,158 +1138,290 @@ def find_common_neigh(A, i, j):
     assert (type(i) == int) and (i >= 0) and (i<N)
     assert (type(j) == int) and (j >= 0) and (j<N)
 
+    #finding out which neighbours they have in common
     return ((A[i] == A[j])&(A[i] == 1)).reshape(-1)
 
+'''
+A = matrix representation of the network
+return = similarity matrix with removed values on the diagonal and already existing links
+'''
 def adamic_adar_link_prediction(A):
 
     assert type(A) == sp.sparse.csr_matrix
 
     N = A.shape[0]
 
+    #getting degrees
     d = get_degrees(A).astype(np.float32)
+
+    #making sure that no degree is exactly one otherwise 1/ln(1) = inf
     d[np.isclose(d, 1)] = 1 + 1e-10
 
+    #initializing S
     S = np.zeros((N,N))
     A = A.toarray()
 
+    #for each node
     for i in range(1,N):
+        #no need to iterate again through all nodes since the matrix is symmetrical
         for j in range(i):
+            
+            #finding common neighbours
             common = find_common_neigh(A, i, j)
+
+            #if the two have at least one neighbours
             if np.sum(common) > 0:
+
+                #finding the value of similarity between i and j
                 Sij = np.sum(1/np.log(d[common]))
                 S[i,j] = Sij
                 S[j,i] = Sij
 
+    #removing the diagonal and nodes that are already connected
     return clean_link_prediction_matrix(S, sp.sparse.csr_matrix(A))
 
+'''
+A = matrix representation of the network
+return = similarity matrix with removed values on the diagonal and already existing links
+'''
 def resource_allocation_link_prediction(A):
     
     assert type(A) == sp.sparse.csr_matrix
+    
     N = A.shape[0]
 
+    #getting degrees and setting up the matrix
     d = get_degrees(A)
     S = np.zeros((N,N))
     A = A.toarray()
 
+    #for each node
     for i in range(1, N):
+        #no need to iterate again through all nodes since the matrix is symmetrical
         for j in range(i):
+
+            #getting common neighbours
             common = find_common_neigh(A, i, j)
+
+            #if i and j have at least 1 common neighbour
             if np.sum(common) > 0:
+
+                #calculating similarity
                 Sij = np.sum(1/d[common])
                 S[i,j] = Sij
                 S[j,i] = Sij
-   
+
+    #removing the diagonal and nodes that are already connected
     return clean_link_prediction_matrix(S, sp.sparse.csr_matrix(A))
 
+'''
+A = matrix representation of the network
+l = maximum exponent
+beta = discount factor
+return = similarity matrix with removed values on the diagonal and already existing links
+'''
 def katz_link_prediction(A, l, beta):
+
+    assert type(A) == sp.sparse.csr_matrix
+    assert (type(l) == int) and (l >= 2)
+    assert type(beta) == float
     
     N = A.shape[0]
+    
+    #initializing the similarity matrix
     S_katz = sp.sparse.csr_matrix((N,N))
+    
+    #starting from A**2 up to A**l, the bigger l the less sparse the matrix meaning that it takes more time
     for i in range(2, l+1):
+
+        #updating similarity matrix
         S_katz += A**i*beta**i
 
     S = S_katz.toarray()
 
+    #removing the diagonal and nodes that are already connected
     return clean_link_prediction_matrix(S, A)
 
+'''
+computes Area Under the Receiver Operating Characteristic Curve given a function f that calculates nodes similarity
+A = sparse matrix representing a network
+f = function that calculates similarity between nodes, it is of type f(A, *args)
+args = additional arguments of function f as a python list
+return = AUC_ROC of the predicted links considering real links
+'''
 def ROC_AUC(A, f, args=None):
+
     assert type(A) == sp.sparse.csr_matrix
+    assert (args is None) or (type(args) == list) or (type(args) == tuple)
 
     N = A.shape[0]
 
+    #findig out where there is already a link between nodes
     x,y = np.where(sp.sparse.triu(A).toarray() == 1)
+
+    #finding out how many link choiches there are
     possible_choiches = np.arange(len(x))
 
+    #getting one tenth of the overall links as probe set
     choiches = np.random.choice(possible_choiches, size=(x.shape[0] // 10), replace=False)
     p = np.concatenate([x[choiches].reshape(-1, 1), y[choiches].reshape(-1, 1)], axis = 1).T
     values = np.ones((p.shape[1]))
 
+    #building the probe matrix
     A_p = sp.sparse.csr_matrix((values, p), shape = (N, N))
     A_p = A_p + A_p.T
 
+    #getting the test set matrix
     A_t = A - A_p
 
+    #getting the similarity matrix from the test set
     if args is not None:
         S_t = f(A_t, *args)
     else:
         S_t = f(A_t)
 
+    #getting a boolean matrix of inactive nodes
     A_i = np.triu(A.toarray() != 1)
+
+    #getting a boolean matrix of the probe set
     A_p = np.triu(A_p.toarray() == 1)
+
+    #getting the predicted values in the probe set
     p = S_t[A_p].reshape(-1,1)
+
+    #getting the predicted values in the test set
     i = S_t[A_i].reshape(-1,1)
 
+    #finding out how many times the prediction from the probe set is bigger than a prediction from inactive set
     numerator = np.sum(i < p.T)
     
+    #returning the normalized result
     return numerator/i.shape[0]/p.shape[0]
 
+
+'''
+A = matrix representation of the network
+return = similarity matrix with removed values on the diagonal and already existing links
+'''
 def random_walk_with_restart_link_prediction(A):
+
+    assert type(A) == sp.sparse.csr_matrix
 
     N = A.shape[0]
     ranking = np.zeros((N, N))
     
+    #for each node in the network perform page rank with node i as teleport vector
     for i in range(N):
+
+        #defining teleport vector
         q = np.zeros((N,1))
         q[i] = 1
+        
+        #calculating page rank
         pt = page_rank_power_iteration(A, q=q)
+        
+        #calculating a piece of the similarity matrix
         ranking[i, :] = pt.reshape(1,-1)
 
+    #getting the similarity matrix
     S = ranking + ranking.T
 
+    #removing the diagonal and nodes that are already connected
     return clean_link_prediction_matrix(S, A)
 
+'''
+A = matrix representation of the network
+t = number of steps
+return = similarity matrix with removed values on the diagonal and already existing links
+'''
 def local_random_walk_link_prediction(A, t=5):
+
+    assert type(A) == sp.sparse.csr_matrix
+    assert (type(t) == int) and (t > 0) 
+
+    N = A.shape[0]
 
     #getting the M matrix
     d = get_degrees(A)
+    #some nodes might have degree 0 since some links can be removed by ROC_AUC
     M = A * sp.sparse.diags((1/(d + 1e-10))[:, 0])
+    #performing the random walk
     Mt = M**t
 
-    Mt = Mt + d
+    #for each i,j calculating pij*d_i + pji*d_j
+    Mt = Mt*(np.zeros((1, N)) + d)
     S = Mt + Mt.T
 
+    #removing the diagonal and nodes that are already connected
     return clean_link_prediction_matrix(S, A)
 
+'''
+A = matrix representation of the network
+t = number of steps
+return = similarity matrix with removed values on the diagonal and already existing links
+'''
 def superposed_random_walk_link_prediction(A, t=5):
 
-    N = A.shape[0]
+    assert type(A) == sp.sparse.csr_matrix
+    assert (type(t) == int) and (t > 0)
 
-    #getting the M matrix
+    N = A.shape[0]
 
     S = np.zeros((N, N))
 
+    #for each timestep from 1 to t
     for u in range(1, t + 1):
+
+        #update the similarity matrix
         S += local_random_walk_link_prediction(A, u)
 
+    #removing the diagonal and nodes that are already connected
     return clean_link_prediction_matrix(S, A)
 
+'''
+A = sparse matrix representing a network
+f = function that calculates similarity between nodes, it is of type f(A, *args)
+args = additional arguments of function f as a python list
+return = precision of the predicted links considering real links
+'''
 def precision(A, f, args = None):
     
     assert type(A) == sp.sparse.csr_matrix
+    assert (args is None) or (type(args) == list) or (type(args) == tuple)
 
     N = A.shape[0]
 
+    #findig out where there is already a link between nodes
     x,y = np.where(sp.sparse.triu(A).toarray() == 1)
+
+    #finding out how many link choiches there are
     possible_choiches = np.arange(len(x))
 
+    #getting the size of the probe set
     L = x.shape[0] // 10
 
+    #getting one tenth of the overall links as probe set
     choiches = np.random.choice(possible_choiches, size=(L), replace=False)
     p = np.concatenate([x[choiches].reshape(-1, 1), y[choiches].reshape(-1, 1)], axis = 1).T
     values = np.ones((p.shape[1]))
 
+    #building the probe matrix
     A_p = sp.sparse.csr_matrix((values, p), shape = (N, N))
     A_p = A_p + A_p.T
 
+    #getting the test set matrix
     A_t = A - A_p
 
+    #getting the similarity matrix from the test set
     if args is not None:
         S_t = f(A_t, *args)
     else:
         S_t = f(A_t)
 
+    #getting L new predictions
     maximas = get_new_links(S_t, L)
     
+    #computing the percentage of predicted links that are in the probe set
     counts = 0
     for amax in maximas:
         if A_p[amax[0], amax[1]] == 1:
@@ -1231,27 +1429,57 @@ def precision(A, f, args = None):
 
     return counts/L
 
-
+'''
+S = similarity matrix
+n = number of links to be predicted
+returns = the n most likely links
+'''
 def get_new_links(S, n):
 
+    assert type(S) == np.ndarray
+    assert (type(n) == int) and (n > 0) 
     maximas = []
 
+    #repeat n times
     for _ in range(n):
+
+        #get the nodes with the highest similarity
         amax = np.unravel_index(np.argmax(S), S.shape)
+
+        #remove the similarity value so the same links aren't picked multiple times
         S[amax[0], amax[1]] = 0
         S[amax[1], amax[0]] = 0
         maximas.append(amax)
 
     return maximas
 
+'''
+A = sparse matrix representing the network
+S = similarity matrix
+return = similarity matrix without diagonal (self loops) and without links that already exist
+'''
 def clean_link_prediction_matrix(S, A):
     
+    assert type(A) == sp.sparse.csr_matrix
+    assert type(S) == np.ndarray
+
+    #sets all the values in the main diagonal to 0
     np.fill_diagonal(S, 0)
+
+    #sets all the values relative to existing links to 0
     S[A.toarray() == 1] = 0
 
     return S
 
+'''
+A = sparse matrix
+division = array dividing the various communities
+return = modularity
+'''
 def get_modularity(A, division):
+
+    assert type(A) == sp.sparse.csr_matrix
+    assert type(division) == np.ndarray
 
     d = get_degrees(A)
     D = np.sum(d)
