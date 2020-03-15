@@ -1,3 +1,12 @@
+# Intro
+
+This was the final project for the network science course at Unipd and it conists in applying algorithms to a social network in order to find out it's properties, in particular I chose to study the network formed in "A Storm of Swords" because I really like the books.
+
+All the code is provided and an explanation about what I did can be found in homework1.pdf and homework2.pdf, in paricular homework2 might be more interesting as its results are clearly explained by the story of the book.
+
+
+### Generic Info
+
 characters.json is a file json containing a key-value realtion between characters and nicknames
 
 connections.csv is a file that contains the dataset
